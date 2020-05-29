@@ -7,6 +7,7 @@
     "lint": "prettier --check 'src/**/*.js'"
   },
   "dependencies": {
+    "@vaadin/vaadin-grid": "^5.6.2"
   },
   "devDependencies": {
     "prettier": "^2.0.0",
