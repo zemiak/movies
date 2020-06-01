@@ -1,13 +1,20 @@
 {
   "scripts": {
+    "prestart": "sh copy-assets.sh",
     "start": "snowpack dev",
+    "prebuild": "sh copy-assets.sh",
     "build": "snowpack build",
     "test": "echo \"This template does not include a test runner by default.\" && exit 1",
     "format": "prettier --write 'src/**/*.js'",
     "lint": "prettier --check 'src/**/*.js'"
   },
+
   "dependencies": {
-    "@vaadin/vaadin-grid": "^5.6.2"
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@vaadin/router": "^1.7.2",
+    "@vaadin/vaadin-grid": "^5.6.2",
+    "bulma": "^0.8.2",
+    "lit-html": "^1.2.1"
   },
   "devDependencies": {
     "prettier": "^2.0.0",

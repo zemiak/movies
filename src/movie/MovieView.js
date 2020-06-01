@@ -1,4 +1,4 @@
-import { html, render } from "../lib/lit-html.js";
+import { html, render } from "lit-html";
 import { MovieService } from "/_dist_/movie/MovieService.js";
 import { BreadCrumbs } from "/_dist_/BreadCrumbs.js";
 

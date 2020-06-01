@@ -1,4 +1,4 @@
-import { html, render } from "/_dist_/lib/lit-html.js";
+import { html, render } from "lit-html";
 import { SerieTableService } from "/_dist_/serie/SerieTableService.js";
 
 export class SerieTableView extends HTMLElement {

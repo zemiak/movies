@@ -1,4 +1,4 @@
-import { html, render } from "/_dist_/lib/lit-html.js";
+import { html, render } from "lit-html";
 import { SearchService } from "/_dist_/search/SearchService.js";
 import { SerieView } from "/_dist_/serie/SerieView.js";
 import { GenreView } from "/_dist_/genre/GenreView.js"

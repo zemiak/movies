@@ -10,14 +10,10 @@ export class LanguageTableService extends RestClientService {
     }
 
     getServicePath() {
-        return "/languages/all";
+        return "/languages/count";
     }
 
-    getCacheKeyName() {
-        return "_" + this.getCustomEventName();
-    }
-
-    setId(id) {
-        this.id = id;
+    getItemsUrl(page, pageSize) {
+        return this.getBaseUri() + "/languages/items?page=" + page + "&pageSize=" + pageSize;
     }
 }

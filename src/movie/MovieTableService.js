@@ -10,14 +10,10 @@ export class MovieTableService extends RestClientService {
     }
 
     getServicePath() {
-        return "/movies/all";
+        return "/movies/count";
     }
 
-    getCacheKeyName() {
-        return "_" + this.getCustomEventName();
-    }
-
-    setId(id) {
-        this.id = id;
+    getItemsUrl(page, pageSize) {
+        return this.getBaseUri() + "/movies/items?page=" + page + "&pageSize=" + pageSize;
     }
 }

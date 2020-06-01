@@ -16,7 +16,7 @@ import { UnknownView } from "/_dist_/unknown/UnknownView.js";
 import { AboutView } from "/_dist_/about/AboutView.js";
 
 import { Cache } from "/_dist_/Cache.js";
-import { Router } from '/_dist_/lib/@vaadin/router.js';
+import { Router } from '@vaadin/router';
 import "/_dist_/search/SearchFieldService.js";
 
 new Cache().clear();

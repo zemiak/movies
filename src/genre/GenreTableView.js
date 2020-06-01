@@ -1,4 +1,4 @@
-import { html, render } from "/_dist_/lib/lit-html.js";
+import { html, render } from "lit-html";
 import { GenreTableService } from "/_dist_/genre/GenreTableService.js";
 
 export class GenreTableView extends HTMLElement {

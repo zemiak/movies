@@ -10,14 +10,10 @@ export class SerieTableService extends RestClientService {
     }
 
     getServicePath() {
-        return "/series/all";
+        return "/series/count";
     }
 
-    getCacheKeyName() {
-        return "_" + this.getCustomEventName();
-    }
-
-    setId(id) {
-        this.id = id;
+    getItemsUrl(page, pageSize) {
+        return this.getBaseUri() + "/movies/items?page=" + page + "&pageSize=" + pageSize;
     }
 }

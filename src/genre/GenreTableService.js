@@ -10,14 +10,10 @@ export class GenreTableService extends RestClientService {
     }
 
     getServicePath() {
-        return "/genres/all";
+        return "/genres/count";
     }
 
-    getCacheKeyName() {
-        return "_" + this.getCustomEventName();
-    }
-
-    setId(id) {
-        this.id = id;
+    getItemsUrl(page, pageSize) {
+        return this.getBaseUri() + "/languages/items?page=" + page + "&pageSize=" + pageSize;
     }
 }

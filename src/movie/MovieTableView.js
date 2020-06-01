@@ -1,4 +1,4 @@
-import { html, render } from "/_dist_/lib/lit-html.js";
+import { html, render } from "lit-html";
 import { MovieTableService } from "/_dist_/movie/MovieTableService.js";
 
 export class MovieTableView extends HTMLElement {

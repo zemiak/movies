@@ -12,7 +12,7 @@ export class RestClientService {
     }
 
     getCacheKeyName() {
-        return "_" + this.getCustomEventName();
+        return null;
     }
 
     getServicePath() {
@@ -52,7 +52,7 @@ export class RestClientService {
             }
         }
 
-        this.dispatchDataEvent({"key": name});
+        this.dispatchDataEvent({"key": key});
     }
 
     dispatchDataEvent(data) {
