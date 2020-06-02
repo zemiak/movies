@@ -1,5 +1,6 @@
 import { html, render } from "lit-html";
 import { MovieTableService } from "/_dist_/movie/MovieTableService.js";
+import '@vaadin/vaadin-grid/vaadin-grid';
 
 export class MovieTableView extends HTMLElement {
     constructor() {
@@ -19,12 +20,25 @@ export class MovieTableView extends HTMLElement {
 
         this.data = this.service.getData(event.detail.key);
 
+        console.log("MovieTableView.update: Data ", this.data);
+
         render(this.view(), this);
 
-        let datatable = new DataTable("#movieTable", {
-            columns: [{name: 'ID', id: "id", width: 128}, {name: 'Name', id: "name", width: 256}, {name: 'Order', id: "displayOrder", width: 128}],
-            data: this.data.map(o => [o.id, o.name, o.displayOrder])
-        });
+        var grid = document.querySelector('#movieTable');
+        grid.size = this.data.count;
+
+        var that = this;
+        grid.dataProvider = function(params, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                console.log("MovieTableView.update: XHR Data ", xhr.responseText);
+                callback(JSON.parse(xhr.responseText).result);
+            };
+
+            var index = params.page * params.pageSize;
+            xhr.open('GET', that.service.getItemsUrl(params.page, params.pageSize), true);
+            xhr.send();
+        };
     }
 
     render() {
@@ -34,8 +48,12 @@ export class MovieTableView extends HTMLElement {
 
     view() {
         return html`
-            <div id="movieTable">
-            </div>`;
+    <vaadin-grid id="movieTable">
+        <vaadin-grid-column path="name" header="Name"></vaadin-grid-column>
+        <vaadin-grid-column path="serie" header="Serie"></vaadin-grid-column>
+        <vaadin-grid-column path="displayOrder" header="Serie Order" width="7em" flex-grow="0"></vaadin-grid-column>
+        <vaadin-grid-column path="id" header="ID" width="7em" flex-grow="0"></vaadin-grid-column>
+    </vaadin-grid>`;
     }
 }
 

@@ -14,6 +14,6 @@ export class GenreTableService extends RestClientService {
     }
 
     getItemsUrl(page, pageSize) {
-        return this.getBaseUri() + "/languages/items?page=" + page + "&pageSize=" + pageSize;
+        return this.getBaseUri() + "/genres/items?page=" + page + "&pageSize=" + pageSize;
     }
 }

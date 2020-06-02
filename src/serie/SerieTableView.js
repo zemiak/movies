@@ -1,5 +1,6 @@
 import { html, render } from "lit-html";
 import { SerieTableService } from "/_dist_/serie/SerieTableService.js";
+import '@vaadin/vaadin-grid/vaadin-grid';
 
 export class SerieTableView extends HTMLElement {
     constructor() {
@@ -19,12 +20,25 @@ export class SerieTableView extends HTMLElement {
 
         this.data = this.service.getData(event.detail.key);
 
+        console.log("SerieTableView.update: Data ", this.data);
+
         render(this.view(), this);
 
-        let datatable = new DataTable("#serieTable", {
-            columns: [{name: 'ID', id: "id", width: 128}, {name: 'Name', id: "name", width: 256}, {name: 'Order', id: "displayOrder", width: 128}],
-            data: this.data.map(o => [o.id, o.name, o.displayOrder])
-        });
+        var grid = document.querySelector('#genreTable');
+        grid.size = this.data.count;
+
+        var that = this;
+        grid.dataProvider = function(params, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                console.log("SerieTableView.update: XHR Data ", xhr.responseText);
+                callback(JSON.parse(xhr.responseText).result);
+            };
+
+            var index = params.page * params.pageSize;
+            xhr.open('GET', that.service.getItemsUrl(params.page, params.pageSize), true);
+            xhr.send();
+        };
     }
 
     render() {
@@ -34,8 +48,13 @@ export class SerieTableView extends HTMLElement {
 
     view() {
         return html`
-            <div id="serieTable">
-            </div>`;
+    <vaadin-grid id="genreTable">
+        <vaadin-grid-column path="displayOrder" header="Order" width="7em" flex-grow="0"></vaadin-grid-column>
+        <vaadin-grid-column path="name" header="Name"></vaadin-grid-column>
+        <vaadin-grid-column path="genre" header="Genre"></vaadin-grid-column>
+        <vaadin-grid-column path="tvShow" header="TV Show"></vaadin-grid-column>
+        <vaadin-grid-column path="id" header="ID" width="7em" flex-grow="0"></vaadin-grid-column>
+    </vaadin-grid>`;
     }
 }
 

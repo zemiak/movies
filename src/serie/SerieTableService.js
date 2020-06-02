@@ -14,6 +14,6 @@ export class SerieTableService extends RestClientService {
     }
 
     getItemsUrl(page, pageSize) {
-        return this.getBaseUri() + "/movies/items?page=" + page + "&pageSize=" + pageSize;
+        return this.getBaseUri() + "/series/items?page=" + page + "&pageSize=" + pageSize;
     }
 }
