@@ -10,10 +10,12 @@ import { MovieView } from "/_dist_/movie/MovieView.js";
 import { MovieTableView } from "/_dist_/movie/MovieTableView.js";
 // import { MovieDetailView } from "/_dist_/movie/MovieDetailView.js";
 import { LanguageTableView } from "/_dist_/language/LanguageTableView.js";
-// import { LanguageDetailView } from "/_dist_/language/LanguageDetailView.js";
+import { LanguageAddView } from "/_dist_/language/LanguageAddView.js";
+import { LanguageDetailView } from "/_dist_/language/LanguageDetailView.js";
 import { SearchView } from "/_dist_/search/SearchView.js";
 import { UnknownView } from "/_dist_/unknown/UnknownView.js";
 import { AboutView } from "/_dist_/about/AboutView.js";
+import { ErrorView } from "/_dist_/error/ErrorView.js";
 
 import { Cache } from "/_dist_/Cache.js";
 import { Router } from '@vaadin/router';
@@ -36,7 +38,9 @@ router.setRoutes([
     {path: '/admin/movie/:id',  component: 'movie-detail-view'},
     {path: '/search/:query',  component: 'search-view'},
     {path: '/about',  component: 'about-view'},
+    {path: '/error',  component: 'error-view'},
     {path: '/admin/languages',  component: 'language-table-view'},
+    {path: '/admin/language/new',  component: 'language-add-view'},
     {path: '/admin/language/:id',  component: 'language-detail-view'},
     {path: '/(.*)',  component: 'unknown-view'}
 ]);

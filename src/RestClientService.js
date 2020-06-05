@@ -11,6 +11,10 @@ export class RestClientService {
         throw "Not Implemented";
     }
 
+    /**
+     * Default behavior: no caching. Return an unique key to cache
+     * the result.
+     */
     getCacheKeyName() {
         return null;
     }
@@ -42,7 +46,16 @@ export class RestClientService {
             const uri = this.getBaseUri() + this.getServicePath();
             console.info("RestClientService.fetchData: Fetching '" + uri + "' for key '" + key + "' ...");
 
-            const response = await fetch(uri);
+            const response = await fetch(uri).catch(reason => {
+                window.localStorage.setItem("_com_zemiak_movies_error", reason + " " + uri);
+                window.location = "/error";
+            });
+
+            if (200 !== response.status) {
+                window.localStorage.setItem("_com_zemiak_movies_error", "Invalid response " + response.status + " " + uri);
+                window.location = "/error";
+            }
+
             const payload = await response.json();
 
             if (null !== key) {
