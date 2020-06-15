@@ -48,11 +48,13 @@ export class LanguageTableView extends HTMLElement {
 
     view() {
         return html`
-    <vaadin-grid id="languageTable">
-        <vaadin-grid-column path="displayOrder" header="Order" width="7em" flex-grow="0"></vaadin-grid-column>
-        <vaadin-grid-column path="name" header="Name"></vaadin-grid-column>
-        <vaadin-grid-column path="id" header="ID" width="7em" flex-grow="0"></vaadin-grid-column>
-    </vaadin-grid>`;
+            <vaadin-grid id="languageTable">
+                <vaadin-grid-column path="displayOrder" header="Order" width="7em" flex-grow="0"></vaadin-grid-column>
+                <vaadin-grid-column path="name" header="Name"></vaadin-grid-column>
+                <vaadin-grid-column path="id" header="ID" width="7em" flex-grow="0"></vaadin-grid-column>
+            </vaadin-grid>
+            <p>&nbsp;</p>
+            <button class="button is-info" onclick="window.location='/admin/language/add'">Add</button>`;
     }
 }
 

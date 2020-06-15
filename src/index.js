@@ -14,6 +14,7 @@ import { MovieTableView } from "/_dist_/movie/MovieTableView.js";
 // import { MovieEditView } from "/_dist_/movie/MovieEditView.js";
 import { LanguageAddView } from "/_dist_/language/LanguageAddView.js";
 import { LanguageEditView } from "/_dist_/language/LanguageEditView.js";
+import { LanguageTableView } from "/_dist_/language/LanguageTableView.js";
 import { SearchView } from "/_dist_/search/SearchView.js";
 import { UnknownView } from "/_dist_/unknown/UnknownView.js";
 import { AboutView } from "/_dist_/about/AboutView.js";
@@ -49,3 +50,5 @@ router.setRoutes([
     {path: '/admin/language/:id',  component: 'language-edit-view'},
     {path: '/(.*)',  component: 'unknown-view'}
 ]);
+
+document.querySelector('#admin-menu').classList.remove('is-active')

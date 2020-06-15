@@ -50,7 +50,7 @@ export class LanguageEditView extends HTMLElement {
     }
 
     cancelClick(event) {
-        console.log("LanguageEditView.cancelClick", event);
+        window.location = "/admin/languages";
     }
 }
 
