@@ -4,7 +4,7 @@ import { RenderLanguageDetail } from "/_dist_/language/RenderLanguageDetail.js";
 export class LanguageAddView extends HTMLElement {
     constructor() {
         super();
-        this.renderer = new RenderLanguageDetail();
+        this.renderer = new RenderLanguageDetail("Successfully added", "Add error");
     }
 
     connectedCallback() {
@@ -41,6 +41,10 @@ export class LanguageAddView extends HTMLElement {
 
     cancelClick(event) {
         window.location = "/admin/languages";
+    }
+
+    addSuccess(event) {
+
     }
 }
 

@@ -5,8 +5,10 @@ import { LanguageDetailService } from "/_dist_/language/LanguageDetailService.js
 export class LanguageEditView extends HTMLElement {
     constructor() {
         super();
-        this.renderer = new RenderLanguageDetail();
+        this.renderer = new RenderLanguageDetail("Successfully saved", "Save error");
         this.service = new LanguageDetailService();
+
+        this.saveClick = this.saveClick.bind(this);
     }
 
     connectedCallback() {
@@ -36,7 +38,7 @@ export class LanguageEditView extends HTMLElement {
     buttons() {
         return html`<div class="field is-grouped">
         <div class="control">
-          <button class="button is-link" @click="${this.saveClick}">Save</button>
+          <button id="saveButton" class="button is-link" @click="${this.saveClick}">Save</button>
         </div>
         <div class="control">
           <button class="button is-link is-light" @click="${this.cancelClick}">Cancel</button>
@@ -46,7 +48,30 @@ export class LanguageEditView extends HTMLElement {
     }
 
     saveClick(event) {
-        console.log("LanguageEditView.saveClick", event);
+        document.querySelector("#saveButton").disabled = "disabled";
+        var item = this.renderer.getFormData();
+        console.log("LanguageEditView.saveClick - sending data", item);
+        this.service.saveOrUpdate(item,
+            response => this.saveSuccess(response),
+            err => this.saveError(err)
+        );
+    }
+
+    saveSuccess(response) {
+        if (! response.ok) {
+            this.saveError(response);
+            return;
+        }
+
+        console.log("LanguageEditView.saveSuccess", response);
+        this.renderer.showSuccess();
+        setTimeout(_ => window.location = "/admin/languages", 1500);
+    }
+
+    saveError(err) {
+        console.log("LanguageEditView.saveError", err);
+        this.renderer.showError(err);
+        setTimeout(_ => window.location = "/admin/languages", 3000);
     }
 
     cancelClick(event) {
