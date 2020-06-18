@@ -7,7 +7,6 @@ export class LanguageEditView extends HTMLElement {
         super();
         this.renderer = new RenderLanguageDetail("Successfully saved", "Save error");
         this.service = new LanguageDetailService();
-
         this.saveClick = this.saveClick.bind(this);
     }
 

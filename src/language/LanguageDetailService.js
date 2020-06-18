@@ -19,8 +19,8 @@ export class LanguageDetailService extends RestClientService {
     }
 
     saveOrUpdate(item, success, error) {
-        var url = "/languages/10"
-        var methodName = "" === item.id ? "POST" : "PUT";
+        var url = "/languages"
+        var methodName = null === item.id ? "POST" : "PUT";
 
         fetch(this.getBaseUri() + url, {method: methodName, headers: {"Content-Type": "application/json"}, body: JSON.stringify(item)})
             .then(response => success(response))
