@@ -19,6 +19,7 @@ import { SearchView } from "/_dist_/search/SearchView.js";
 import { UnknownView } from "/_dist_/unknown/UnknownView.js";
 import { AboutView } from "/_dist_/about/AboutView.js";
 import { ErrorView } from "/_dist_/error/ErrorView.js";
+import { SettingsView } from "/_dist_/settings/SettingsView.js";
 
 import { Cache } from "/_dist_/Cache.js";
 import { Router } from '@vaadin/router';
@@ -45,10 +46,9 @@ router.setRoutes([
     {path: '/search/:query',  component: 'search-view'},
     {path: '/about',  component: 'about-view'},
     {path: '/error',  component: 'error-view'},
+    {path: '/settings',  component: 'settings-view'},
     {path: '/admin/languages',  component: 'language-table-view'},
     {path: '/admin/language/add',  component: 'language-add-view'},
     {path: '/admin/language/:id',  component: 'language-edit-view'},
     {path: '/(.*)',  component: 'unknown-view'}
 ]);
-
-document.querySelector('#admin-menu').classList.remove('is-active')

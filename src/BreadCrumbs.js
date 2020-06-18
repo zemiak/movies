@@ -1,7 +1,7 @@
 export class BreadCrumbs extends HTMLElement {
     constructor() {
         super();
-        this.items = [{url: "/", title: "Home"}];
+        this.items = [{url: "/", title: "Home"}, {url: "/settings", title: "Settings"}];
     }
 
     connectedCallback() {
