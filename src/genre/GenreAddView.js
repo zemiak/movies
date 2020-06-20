@@ -1,12 +1,12 @@
 import { html, render } from "lit-html";
-import { RenderLanguageDetail } from "/_dist_/language/RenderLanguageDetail.js";
-import { LanguageDetailService } from "/_dist_/language/LanguageDetailService.js";
+import { RenderGenreDetail } from "/_dist_/genre/RenderGenreDetail.js";
+import { GenreDetailService } from "/_dist_/genre/GenreDetailService.js";
 
-export class LanguageAddView extends HTMLElement {
+export class GenreAddView extends HTMLElement {
     constructor() {
         super();
-        this.renderer = new RenderLanguageDetail("Successfully added", "Add error");
-        this.service = new LanguageDetailService();
+        this.renderer = new RenderGenreDetail("Successfully added", "Add error");
+        this.service = new GenreDetailService();
         this.saveClick = this.saveClick.bind(this);
     }
 
@@ -42,7 +42,7 @@ export class LanguageAddView extends HTMLElement {
         document.querySelector("#saveButton").disabled = "disabled";
         var item = this.renderer.getFormData();
         item.id = null;
-        console.log("LanguageAddView.saveClick - sending data", item);
+        console.log("GenreAddView.saveClick - sending data", item);
         this.service.saveOrUpdate(item,
             response => this.saveSuccess(response),
             err => this.saveError(err)
@@ -55,20 +55,20 @@ export class LanguageAddView extends HTMLElement {
             return;
         }
 
-        console.log("LanguageAddView.saveSuccess", response);
+        console.log("GenreAddView.saveSuccess", response);
         this.renderer.showSuccess();
-        setTimeout(_ => window.location = "/admin/languages", 1500);
+        setTimeout(_ => window.location = "/admin/genres", 1500);
     }
 
     saveError(err) {
-        console.log("LanguageAddView.saveError", err);
+        console.log("GenreAddView.saveError", err);
         this.renderer.showError(err);
-        setTimeout(_ => window.location = "/admin/languages", 3000);
+        setTimeout(_ => window.location = "/admin/genres", 3000);
     }
 
     cancelClick(event) {
-        window.location = "/admin/languages";
+        window.location = "/admin/genres";
     }
 }
 
-customElements.define("language-add-view", LanguageAddView);
+customElements.define("genre-add-view", GenreAddView);

@@ -1,6 +1,6 @@
 import { html } from "lit-html";
 
-export class RenderLanguageDetail {
+export class RenderGenreDetail {
     constructor(successMessage, errorMessage) {
         this.successMessage = successMessage;
         this.errorMessage = errorMessage;
@@ -16,11 +16,11 @@ export class RenderLanguageDetail {
             items.push(this.id(readOnly, entity.id));
         }
 
-        items.push(this.code(readOnly, entity.code));
         items.push(this.name(readOnly, entity.name));
         items.push(this.displayOrder(readOnly, entity.displayOrder));
+        items.push(this.protectedGenre(readOnly, entity.protectedGenre));
 
-        let title = this.title(isNew ? "New Language" : "Language");
+        let title = this.title(isNew ? "New Genre" : "Genre");
 
         return html`${title}<p>&nbsp;</p><form class="form-horizontal"><fieldset>${items}</fieldset></form><p>&nbsp;</p>`;
     }
@@ -28,10 +28,10 @@ export class RenderLanguageDetail {
     getFormData() {
         var item = {};
 
-        this.addItem(item, "id", "languageId");
-        this.addItem(item, "code", "languageCode");
-        this.addItem(item, "name", "languageName");
-        this.addItem(item, "displayOrder", "languageDisplayOrder");
+        this.addItem(item, "id", "genreId");
+        this.addItem(item, "name", "genreName");
+        this.addItem(item, "displayOrder", "genreDisplayOrder");
+        item["protectedGenre"] = document.querySelector("#genreProtectedGenre").checked ? 1 : 0;
 
         return item;
     }
@@ -74,7 +74,7 @@ export class RenderLanguageDetail {
         <div class="field">
         <label class="label">ID</label>
         <div class="control has-icons-left">
-          <input id="languageId" class="input" type="text" placeholder="${disabled}" disabled value="${value}">
+          <input id="genreId" class="input" type="text" placeholder="${disabled}" disabled value="${value}">
           <span class="icon is-small is-left">
             <i class="fas fa-hashtag"></i>
           </span>
@@ -82,15 +82,13 @@ export class RenderLanguageDetail {
       </div>`;
     }
 
-    code(readOnly, value) {
+    protectedGenre(readOnly, intValue) {
+        var value = intValue === 1;
         return html`<div class="field">
-        <label class="label">Code</label>
-        <div class="control has-icons-left">
-          <input id="languageCode" class="input is-focused" ?disabled="${readOnly}" type="text" placeholder="Language code" minlength="2" maxlength="2" value="${value}">
-          <span class="icon is-small is-left">
-            <i class="fas fa-globe"></i>
-          </span>
-        </div>
+        <label class="checkbox">
+        <input id="genreProtectedGenre" ?disabled="${readOnly}" type="checkbox" ?checked="${value}">
+            Protected
+        </label>
       </div>`;
     }
 
@@ -98,7 +96,7 @@ export class RenderLanguageDetail {
         return html`<div class="field">
         <label class="label">Description</label>
         <div class="control has-icons-left">
-          <input id="languageName" class="input" ?disabled="${readOnly}" type="text" minlength="2" placeholder="Language description" value="${value}">
+          <input id="genreName" class="input" ?disabled="${readOnly}" type="text" minlength="2" placeholder="Genre description" value="${value}">
           <span class="icon is-small is-left">
             <i class="fas fa-font"></i>
           </span>
@@ -110,7 +108,7 @@ export class RenderLanguageDetail {
         return html`<div class="field">
         <label class="label">Order</label>
         <div class="control has-icons-left">
-          <input id="languageDisplayOrder" class="input" ?disabled="${readOnly}" type="number" min="0" placeholder="Display order" value="${value}">
+          <input id="genreDisplayOrder" class="input" ?disabled="${readOnly}" type="number" min="0" placeholder="Display order" value="${value}">
           <span class="icon is-small is-left">
             <i class="fas fa-sort-numeric-down"></i>
           </span>
