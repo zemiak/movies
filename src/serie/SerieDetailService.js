@@ -15,7 +15,7 @@ export class SerieDetailService extends RestClientService {
     }
 
     getServicePath() {
-        return "/series/" + this.id;
+        return "/series/detail/" + this.id;
     }
 
     saveOrUpdate(item, success, error) {
