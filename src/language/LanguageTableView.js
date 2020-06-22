@@ -57,6 +57,7 @@ export class LanguageTableView extends HTMLElement {
 
     view() {
         return html`
+            <h1 class="title">Languages</h1>
             <vaadin-grid id="languageTable">
                 <vaadin-grid-column path="displayOrder" header="Order" width="7em" flex-grow="0"></vaadin-grid-column>
                 <vaadin-grid-column path="code" header="Code" width="6em" flex-grow="0"></vaadin-grid-column>

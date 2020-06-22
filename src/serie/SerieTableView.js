@@ -28,6 +28,15 @@ export class SerieTableView extends HTMLElement {
         grid.size = this.data.count;
 
         var that = this;
+        document.querySelector('#editColumn').renderer = (root, grid, rowData) => {
+            root.innerHTML = `<button class="button is-info is-small" onclick="window.location='/admin/serie/${rowData.item.id}'">
+                <span class="icon is-small">
+                    <i class="fas fa-edit" aria-hidden="true"></i>
+                </span>
+                <span>Edit</span>
+            </button>`;
+        };
+
         grid.dataProvider = function(params, callback) {
             var xhr = new XMLHttpRequest();
             xhr.onload = function() {
@@ -48,13 +57,21 @@ export class SerieTableView extends HTMLElement {
 
     view() {
         return html`
-    <vaadin-grid id="genreTable">
-        <vaadin-grid-column path="displayOrder" header="Order" width="7em" flex-grow="0"></vaadin-grid-column>
-        <vaadin-grid-column path="name" header="Name"></vaadin-grid-column>
-        <vaadin-grid-column path="genre" header="Genre"></vaadin-grid-column>
-        <vaadin-grid-column path="tvShow" header="TV Show"></vaadin-grid-column>
-        <vaadin-grid-column path="id" header="ID" width="7em" flex-grow="0"></vaadin-grid-column>
-    </vaadin-grid>`;
+            <h1 class="title">Series</h1>
+            <vaadin-grid id="genreTable">
+                <vaadin-grid-column path="displayOrder" header="Order" width="7em" flex-grow="0"></vaadin-grid-column>
+                <vaadin-grid-column path="name" header="Name"></vaadin-grid-column>
+                <vaadin-grid-column path="genre" header="Genre"></vaadin-grid-column>
+                <vaadin-grid-column path="tvShow" header="TV Show"></vaadin-grid-column>
+                <vaadin-grid-column path="id" header="ID" width="7em" flex-grow="0"></vaadin-grid-column>
+                <vaadin-grid-column id="editColumn" header="" width="6em" flex-grow="0"></vaadin-grid-column>
+            </vaadin-grid><p>&nbsp;</p>
+            <button class="button is-info" onclick="window.location='/admin/serie/add'">
+                <span class="icon is-small">
+                    <i class="fas fa-plus" aria-hidden="true"></i>
+                </span>
+                <span>Add</span>
+            </button>`;
     }
 }
 

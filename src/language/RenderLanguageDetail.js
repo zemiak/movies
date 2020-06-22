@@ -22,7 +22,7 @@ export class RenderLanguageDetail {
 
         let title = this.title(isNew ? "New Language" : "Language");
 
-        return html`${title}<p>&nbsp;</p><form class="form-horizontal"><fieldset>${items}</fieldset></form><p>&nbsp;</p>`;
+        return html`${title}<form class="form-horizontal"><fieldset>${items}</fieldset></form><p>&nbsp;</p>`;
     }
 
     getFormData() {
@@ -57,15 +57,7 @@ export class RenderLanguageDetail {
     }
 
     title(title) {
-        return html`<section class="hero">
-        <div class="">
-          <div class="container">
-            <h1 class="title">
-              ${title}
-            </h1>
-          </div>
-        </div>
-      </section>`;
+        return html`<h1 class="title">${title}</h1>`;
     }
 
     id(readOnly, value) {

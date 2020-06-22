@@ -1,6 +1,6 @@
 import { html } from "lit-html";
 
-export class RenderGenreDetail {
+export class RenderSerieDetail {
     constructor(successMessage, errorMessage) {
         this.successMessage = successMessage;
         this.errorMessage = errorMessage;
@@ -18,9 +18,9 @@ export class RenderGenreDetail {
 
         items.push(this.name(readOnly, entity.name));
         items.push(this.displayOrder(readOnly, entity.displayOrder));
-        items.push(this.protectedGenre(readOnly, entity.protectedGenre));
+        items.push(this.tvShow(readOnly, entity.tvShow));
 
-        let title = this.title(isNew ? "New Genre" : "Genre");
+        let title = this.title(isNew ? "New Serie" : "Serie");
 
         return html`${title}<form class="form-horizontal"><fieldset>${items}</fieldset></form><p>&nbsp;</p>`;
     }
@@ -28,10 +28,10 @@ export class RenderGenreDetail {
     getFormData() {
         var item = {};
 
-        this.addItem(item, "id", "genreId");
-        this.addItem(item, "name", "genreName");
-        this.addItem(item, "displayOrder", "genreDisplayOrder");
-        item["protectedGenre"] = document.querySelector("#genreProtectedGenre").checked ? 1 : 0;
+        this.addItem(item, "id", "serieId");
+        this.addItem(item, "name", "serieName");
+        this.addItem(item, "displayOrder", "serieDisplayOrder");
+        item["tvShow"] = document.querySelector("#serieTvShow").checked ? 1 : 0;
 
         return item;
     }
@@ -66,7 +66,7 @@ export class RenderGenreDetail {
         <div class="field">
         <label class="label">ID</label>
         <div class="control has-icons-left">
-          <input id="genreId" class="input" type="text" placeholder="${disabled}" disabled value="${value}">
+          <input id="serieId" class="input" type="text" placeholder="${disabled}" disabled value="${value}">
           <span class="icon is-small is-left">
             <i class="fas fa-hashtag"></i>
           </span>
@@ -74,12 +74,12 @@ export class RenderGenreDetail {
       </div>`;
     }
 
-    protectedGenre(readOnly, intValue) {
+    tvShow(readOnly, intValue) {
         var value = intValue === 1;
         return html`<div class="field">
         <label class="checkbox">
-        <input id="genreProtectedGenre" ?disabled="${readOnly}" type="checkbox" ?checked="${value}">
-            Protected
+        <input id="serieTvShow" ?disabled="${readOnly}" type="checkbox" ?checked="${value}">
+            TV Show
         </label>
       </div>`;
     }
@@ -88,7 +88,7 @@ export class RenderGenreDetail {
         return html`<div class="field">
         <label class="label">Description</label>
         <div class="control has-icons-left">
-          <input id="genreName" class="input" ?disabled="${readOnly}" type="text" minlength="2" placeholder="Genre description" value="${value}">
+          <input id="serieName" class="input" ?disabled="${readOnly}" type="text" minlength="2" placeholder="Serie description" value="${value}">
           <span class="icon is-small is-left">
             <i class="fas fa-font"></i>
           </span>
@@ -100,7 +100,7 @@ export class RenderGenreDetail {
         return html`<div class="field">
         <label class="label">Order</label>
         <div class="control has-icons-left">
-          <input id="genreDisplayOrder" class="input" ?disabled="${readOnly}" type="number" min="0" placeholder="Display order" value="${value}">
+          <input id="serieDisplayOrder" class="input" ?disabled="${readOnly}" type="number" min="0" placeholder="Display order" value="${value}">
           <span class="icon is-small is-left">
             <i class="fas fa-sort-numeric-down"></i>
           </span>
