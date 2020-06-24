@@ -17,6 +17,7 @@ export class RenderSerieDetail {
         }
 
         items.push(this.name(readOnly, entity.name));
+        items.push(this.genre(readOnly, entity.genreId, entity.genres));
         items.push(this.displayOrder(readOnly, entity.displayOrder));
         items.push(this.tvShow(readOnly, entity.tvShow));
 
@@ -30,8 +31,9 @@ export class RenderSerieDetail {
 
         this.addItem(item, "id", "serieId");
         this.addItem(item, "name", "serieName");
+        this.addItem(item, "genreId", "serieGenreId");
         this.addItem(item, "displayOrder", "serieDisplayOrder");
-        item["tvShow"] = document.querySelector("#serieTvShow").checked ? 1 : 0;
+        item["tvShow"] = document.querySelector("#serieTvShow").checked ? "1" : "0";
 
         return item;
     }
@@ -47,6 +49,15 @@ export class RenderSerieDetail {
             <p>${text}</p>
         </div>
       </article>`;
+    }
+
+    genre(readOnly, genreId, genres) {
+        var items = [];
+        for (const [key, value] of Object.entries(genres)) {
+            items.push(html`<option value="${key}" ?selected=${key == genreId}>${value}</option>`);
+        }
+
+        return html`<div class="field"><label class="label">Genre</label><div class="select"><select id="serieGenreId" ?disabled=${readOnly}>${items}</select></div></div>`;
     }
 
     focus() {
