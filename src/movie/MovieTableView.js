@@ -28,6 +28,15 @@ export class MovieTableView extends HTMLElement {
         grid.size = this.data.count;
 
         var that = this;
+        document.querySelector('#editColumn').renderer = (root, grid, rowData) => {
+            root.innerHTML = `<button class="button is-info is-small" onclick="window.location='/admin/movie/${rowData.item.id}'">
+                <span class="icon is-small">
+                    <i class="fas fa-edit" aria-hidden="true"></i>
+                </span>
+                <span>Edit</span>
+            </button>`;
+        };
+
         grid.dataProvider = function(params, callback) {
             var xhr = new XMLHttpRequest();
             xhr.onload = function() {
@@ -53,7 +62,14 @@ export class MovieTableView extends HTMLElement {
         <vaadin-grid-column path="serie" header="Serie"></vaadin-grid-column>
         <vaadin-grid-column path="displayOrder" header="Serie Order" width="7em" flex-grow="0"></vaadin-grid-column>
         <vaadin-grid-column path="id" header="ID" width="7em" flex-grow="0"></vaadin-grid-column>
-    </vaadin-grid>`;
+        <vaadin-grid-column id="editColumn" header="" width="6em" flex-grow="0"></vaadin-grid-column>
+    </vaadin-grid><p>&nbsp;</p>
+    <button class="button is-info" onclick="window.location='/admin/movie/add'">
+        <span class="icon is-small">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+        </span>
+        <span>Add</span>
+    </button>`;
     }
 }
 
