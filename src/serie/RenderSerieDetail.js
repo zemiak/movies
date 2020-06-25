@@ -33,7 +33,7 @@ export class RenderSerieDetail {
         this.addItem(item, "name", "serieName");
         this.addItem(item, "genreId", "serieGenreId");
         this.addItem(item, "displayOrder", "serieDisplayOrder");
-        item["tvShow"] = document.querySelector("#serieTvShow").checked ? "1" : "0";
+        item["tvShow"] = document.querySelector("#serieTvShow").checked ? true : false;
 
         return item;
     }
@@ -85,8 +85,7 @@ export class RenderSerieDetail {
       </div>`;
     }
 
-    tvShow(readOnly, intValue) {
-        var value = intValue === 1;
+    tvShow(readOnly, value) {
         return html`<div class="field">
         <label class="checkbox">
         <input id="serieTvShow" ?disabled="${readOnly}" type="checkbox" ?checked="${value}">

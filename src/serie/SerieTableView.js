@@ -62,7 +62,7 @@ export class SerieTableView extends HTMLElement {
                 <vaadin-grid-column path="displayOrder" header="Order" width="7em" flex-grow="0"></vaadin-grid-column>
                 <vaadin-grid-column path="name" header="Name"></vaadin-grid-column>
                 <vaadin-grid-column path="genre" header="Genre"></vaadin-grid-column>
-                <vaadin-grid-column path="tvShow" header="TV Show"></vaadin-grid-column>
+                <vaadin-grid-column path="tvShowText" header="TV Show"></vaadin-grid-column>
                 <vaadin-grid-column path="id" header="ID" width="7em" flex-grow="0"></vaadin-grid-column>
                 <vaadin-grid-column id="editColumn" header="" width="6em" flex-grow="0"></vaadin-grid-column>
             </vaadin-grid><p>&nbsp;</p>
