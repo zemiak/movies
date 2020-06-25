@@ -1,26 +1,35 @@
 import { html, render } from "lit-html";
 import { RenderSerieDetail } from "/_dist_/serie/RenderSerieDetail.js";
 import { SerieDetailService } from "/_dist_/serie/SerieDetailService.js";
+import { SerieAddService } from "/_dist_/serie/SerieAddService.js";
 
 export class SerieAddView extends HTMLElement {
     constructor() {
         super();
         this.renderer = new RenderSerieDetail("Successfully added", "Add error");
         this.service = new SerieDetailService();
+        this.addservice = new SerieAddService();
         this.saveClick = this.saveClick.bind(this);
     }
 
     connectedCallback() {
+        addEventListener(this.addservice.getCustomEventName(), e => this.update(e));
+        console.log("SerieAddView.connectedCallback");
         this.render();
+    }
+
+    update() {
+        this.data = this.addservice.getData(event.detail.key);
+        render(this.view(), this);
         this.renderer.focus();
     }
 
     render() {
-        render(this.view(), this);
+        this.addservice.fetchData();
     }
 
     view() {
-        var entity = {id: "", code: "", name: "", displayOrder: 0};
+        var entity = {id: "", code: "", name: "", displayOrder: 0, genres: this.data.genres, tvShow: "0"};
         var view = this.renderer.view(entity, false, true);
         let buttons = this.buttons();
         return html`${view}${buttons}`;

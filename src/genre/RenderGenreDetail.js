@@ -31,7 +31,7 @@ export class RenderGenreDetail {
         this.addItem(item, "id", "genreId");
         this.addItem(item, "name", "genreName");
         this.addItem(item, "displayOrder", "genreDisplayOrder");
-        item["protectedGenre"] = document.querySelector("#genreProtectedGenre").checked ? 1 : 0;
+        item["protectedGenre"] = document.querySelector("#genreProtectedGenre").checked ? "1" : "0";
 
         return item;
     }

@@ -1,26 +1,35 @@
 import { html, render } from "lit-html";
 import { RenderMovieDetail } from "/_dist_/movie/RenderMovieDetail.js";
 import { MovieDetailService } from "/_dist_/movie/MovieDetailService.js";
+import { MovieAddService } from "/_dist_/movie/MovieAddService.js";
 
 export class MovieAddView extends HTMLElement {
     constructor() {
         super();
         this.renderer = new RenderMovieDetail("Successfully added", "Add error");
         this.service = new MovieDetailService();
+        this.addservice = new MovieAddService();
         this.saveClick = this.saveClick.bind(this);
     }
 
     connectedCallback() {
+        addEventListener(this.addservice.getCustomEventName(), e => this.update(e));
+        console.log("MovieEditView.connectedCallback");
         this.render();
+    }
+
+    update() {
+        this.data = this.addservice.getData(event.detail.key);
+        render(this.view(), this);
         this.renderer.focus();
     }
 
     render() {
-        render(this.view(), this);
+        this.addservice.fetchData();
     }
 
     view() {
-        var entity = {id: "", code: "", name: "", displayOrder: 0};
+        var entity = {id: "", code: "", name: "", displayOrder: 0, genres: this.data.genres, languages: this.data.languages, serieGenres: this.data.serieGenres, series: this.data.series, originalName: ""};
         var view = this.renderer.view(entity, false, true);
         let buttons = this.buttons();
         return html`${view}${buttons}`;

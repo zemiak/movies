@@ -17,6 +17,8 @@ export class RenderMovieDetail {
             items.push(this.id(readOnly, entity.id));
         }
 
+        console.log("Got Movie Entity", entity);
+
         items.push(this.text("movieName", "Name", readOnly, entity.name));
         items.push(this.text("movieOriginalName", "Original Name", readOnly, entity.originalName));
         items.push(this.textArea("movieDescription", "Description", readOnly, entity.description));
@@ -45,9 +47,6 @@ export class RenderMovieDetail {
         this.addItem(item, "originalLanguageId", "movieOriginalLanguageId");
         this.addItem(item, "subtitlesId", "movieSubtitlesId");
         this.addItem(item, "displayOrder", "movieDisplayOrder");
-
-
-        console.log(item); alert(1);
 
         return item;
     }
@@ -114,11 +113,8 @@ export class RenderMovieDetail {
     textArea(id, label, readOnly, value) {
         return html`<div class="field">
         <label class="label">${label}</label>
-        <div class="control has-icons-left">
-          <textarea id=${id} class="textarea"></textarea>
-          <span class="icon is-small is-left">
-            <i class="fas fa-font"></i>
-          </span>
+        <div class="control">
+          <textarea id=${id} class="textarea" ?disabled="${readOnly}">${value}</textarea>
         </div>
       </div>`;
     }
