@@ -20,7 +20,7 @@ export class LanguageAddView extends HTMLElement {
     }
 
     view() {
-        var entity = {id: "", code: "", name: "", displayOrder: 0};
+        var entity = {id: "", code: "", name: "", displayOrder: 0, pictureFileName: "", created: null};
         var view = this.renderer.view(entity, false, true);
         let buttons = this.buttons();
         return html`${view}${buttons}`;

@@ -29,8 +29,7 @@ export class MovieAddView extends HTMLElement {
     }
 
     view() {
-        var entity = {id: "", code: "", name: "", displayOrder: 0, genres: this.data.genres, languages: this.data.languages, serieGenres: this.data.serieGenres, series: this.data.series, originalName: ""};
-        var view = this.renderer.view(entity, false, true);
+        var view = this.renderer.view(this.data, false, true);
         let buttons = this.buttons();
         return html`${view}${buttons}`;
     }
