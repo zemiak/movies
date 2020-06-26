@@ -20,6 +20,8 @@ export class RenderSerieDetail {
         items.push(this.genre(readOnly, entity.genreId, entity.genres));
         items.push(this.displayOrder(readOnly, entity.displayOrder));
         items.push(this.tvShow(readOnly, entity.tvShow));
+        items.push(this.hidden("seriePictureFileName", entity.pictureFileName));
+        items.push(this.hidden("serieCreated", entity.created));
 
         let title = this.title(isNew ? "New Serie" : "Serie");
 
@@ -34,6 +36,8 @@ export class RenderSerieDetail {
         this.addItem(item, "genreId", "serieGenreId");
         this.addItem(item, "displayOrder", "serieDisplayOrder");
         item["tvShow"] = document.querySelector("#serieTvShow").checked ? true : false;
+        this.addItem(item, "pictureFileName", "seriePictureFileName");
+        this.addItem(item, "created", "serieCreated");
 
         return item;
     }
@@ -83,6 +87,10 @@ export class RenderSerieDetail {
           </span>
         </div>
       </div>`;
+    }
+
+    hidden(id, value) {
+        return html`<input type="hidden" value=${value} id=${id} />`;
     }
 
     tvShow(readOnly, value) {

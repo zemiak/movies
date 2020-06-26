@@ -19,6 +19,8 @@ export class RenderLanguageDetail {
         items.push(this.code(readOnly, entity.code));
         items.push(this.name(readOnly, entity.name));
         items.push(this.displayOrder(readOnly, entity.displayOrder));
+        items.push(this.hidden("languagePictureFileName", entity.pictureFileName));
+        items.push(this.hidden("languageCreated", entity.created));
 
         let title = this.title(isNew ? "New Language" : "Language");
 
@@ -32,6 +34,8 @@ export class RenderLanguageDetail {
         this.addItem(item, "code", "languageCode");
         this.addItem(item, "name", "languageName");
         this.addItem(item, "displayOrder", "languageDisplayOrder");
+        this.addItem(item, "pictureFileName", "languagePictureFileName");
+        this.addItem(item, "created", "languageCreated");
 
         return item;
     }
@@ -47,6 +51,10 @@ export class RenderLanguageDetail {
             <p>${text}</p>
         </div>
       </article>`;
+    }
+
+    hidden(id, value) {
+        return html`<input type="hidden" value=${value} id=${id} />`;
     }
 
     focus() {

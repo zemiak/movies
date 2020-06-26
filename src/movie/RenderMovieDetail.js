@@ -28,6 +28,12 @@ export class RenderMovieDetail {
         items.push(this.combo("movieOriginalLanguageId", "OriginalLanguage", readOnly, entity.originalLanguageId, entity.languages));
         items.push(this.combo("movieSubtitlesId", "Subtitles", readOnly, entity.subtitlesId, entity.languages));
         items.push(this.number("movieDisplayOrder", "Display Order", readOnly, entity.displayOrder));
+        items.push(this.hidden("moviePictureFileName", entity.pictureFileName));
+        items.push(this.hidden("movieCreated", entity.created));
+        items.push(this.hidden("movieFileName", entity.fileName));
+        items.push(this.hidden("movieUrl", entity.url));
+        items.push(this.hidden("movieWebPage", entity.webPage));
+        items.push(this.hidden("movieYear", entity.year));
 
         let title = this.title(isNew ? "New Movie" : "Movie");
 
@@ -47,6 +53,12 @@ export class RenderMovieDetail {
         this.addItem(item, "originalLanguageId", "movieOriginalLanguageId");
         this.addItem(item, "subtitlesId", "movieSubtitlesId");
         this.addItem(item, "displayOrder", "movieDisplayOrder");
+        this.addItem(item, "pictureFileName", "moviePictureFileName");
+        this.addItem(item, "created", "movieCreated");
+        this.addItem(item, "fileName", "movieFileName");
+        this.addItem(item, "url", "movieUrl");
+        this.addItem(item, "webPage", "movieWebPage");
+        this.addItem(item, "year", "movieYear");
 
         return item;
     }
@@ -71,6 +83,10 @@ export class RenderMovieDetail {
         }
 
         return html`<div class="field"><label class="label">${label}</label><div class="select"><select @onchange=${callback} id="${id}" ?disabled=${readOnly}>${templates}</select></div></div>`;
+    }
+
+    hidden(id, value) {
+        return html`<input type="hidden" value=${value} id=${id} />`;
     }
 
     focus() {

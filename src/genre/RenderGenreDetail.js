@@ -19,6 +19,8 @@ export class RenderGenreDetail {
         items.push(this.name(readOnly, entity.name));
         items.push(this.displayOrder(readOnly, entity.displayOrder));
         items.push(this.protectedGenre(readOnly, entity.protectedGenre));
+        items.push(this.hidden("genrePictureFileName", entity.pictureFileName));
+        items.push(this.hidden("genreCreated", entity.created));
 
         let title = this.title(isNew ? "New Genre" : "Genre");
 
@@ -32,6 +34,11 @@ export class RenderGenreDetail {
         this.addItem(item, "name", "genreName");
         this.addItem(item, "displayOrder", "genreDisplayOrder");
         item["protectedGenre"] = document.querySelector("#genreProtectedGenre").checked ? "1" : "0";
+        this.addItem(item, "pictureFileName", "genrePictureFileName");
+        this.addItem(item, "created", "genreCreated");
+
+        // {id: "", name: "", displayOrder: 0, protectedGenre: "0", created: null, pictureFileName: null};
+
 
         return item;
     }
@@ -47,6 +54,10 @@ export class RenderGenreDetail {
             <p>${text}</p>
         </div>
       </article>`;
+    }
+
+    hidden(id, value) {
+        return html`<input type="hidden" value=${value} id=${id} />`;
     }
 
     focus() {
