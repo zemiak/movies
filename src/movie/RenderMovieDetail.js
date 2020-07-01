@@ -1,10 +1,10 @@
-import { html } from "lit-html";
+import { html, render } from "lit-html";
 
 export class RenderMovieDetail {
     constructor(successMessage, errorMessage) {
         this.successMessage = successMessage;
         this.errorMessage = errorMessage;
-        this.serieChanged = this.serieChanged.bind(this);
+        this.genreChanged = this.genreChanged.bind(this);
     }
 
     view(entity, readOnly, isNew) {
@@ -17,13 +17,11 @@ export class RenderMovieDetail {
             items.push(this.id(readOnly, entity.id));
         }
 
-        console.log("Got Movie Entity", entity);
-
         items.push(this.text("movieName", "Name", readOnly, entity.name));
         items.push(this.text("movieOriginalName", "Original Name", readOnly, entity.originalName));
         items.push(this.textArea("movieDescription", "Description", readOnly, entity.description));
-        items.push(this.combo("movieGenreId", "Genre", readOnly, entity.genreId, entity.genres, this.dummy));
-        items.push(this.combo("movieSerieId", "Serie", readOnly, entity.serieId, entity.series, this.serieChanged));
+        items.push(this.genre(readOnly, entity.genreId, entity.genres));
+        items.push(this.combo("movieSerieId", "Serie", readOnly, entity.serieId, entity.series));
         items.push(this.combo("movieLanguageId", "Language", readOnly, entity.languageId, entity.languages));
         items.push(this.combo("movieOriginalLanguageId", "OriginalLanguage", readOnly, entity.originalLanguageId, entity.languages));
         items.push(this.combo("movieSubtitlesId", "Subtitles", readOnly, entity.subtitlesId, entity.languages));
@@ -35,7 +33,11 @@ export class RenderMovieDetail {
         items.push(this.hidden("movieWebPage", entity.webPage));
         items.push(this.hidden("movieYear", entity.year));
 
+        this.data = entity;
+
         let title = this.title(isNew ? "New Movie" : "Movie");
+
+        console.log(entity);
 
         return html`${title}<form class="form-horizontal"><fieldset>${items}</fieldset></form><p>&nbsp;</p>`;
     }
@@ -76,13 +78,22 @@ export class RenderMovieDetail {
       </article>`;
     }
 
-    combo(id, label, readOnly, itemId, items, callback) {
+    combo(id, label, readOnly, itemId, items,) {
         var templates = [];
         for (const [key, value] of Object.entries(items)) {
             templates.push(html`<option value="${key}" ?selected=${key == itemId}>${value}</option>`);
         }
 
-        return html`<div class="field"><label class="label">${label}</label><div class="select"><select @onchange=${callback} id="${id}" ?disabled=${readOnly}>${templates}</select></div></div>`;
+        return html`<div class="field"><label class="label">${label}</label><div class="select"><select id="${id}" ?disabled=${readOnly}>${templates}</select></div></div>`;
+    }
+
+    genre(readOnly, itemId, items,) {
+        var templates = [];
+        for (const [key, value] of Object.entries(items)) {
+            templates.push(html`<option value="${key}" ?selected=${key == itemId}>${value}</option>`);
+        }
+
+        return html`<div class="field"><label class="label">Genre</label><div class="select"><select @change=${this.genreChanged} ?disabled=${readOnly} id="movieGenreId">${templates}</select></div></div>`;
     }
 
     hidden(id, value) {
@@ -158,8 +169,14 @@ export class RenderMovieDetail {
             : err;
     }
 
-    serieChanged(event) {
-        console.log("RenderMovieDetail.serieChanged", event);
-        // ... serieGenres: serieId -> genreId
+    genreChanged(event) {
+        var currentGenre = document.querySelector("#movieGenreId").value;
+        var series = document.querySelector("#movieSerieId");
+        series.options.length = 0;
+        for (const [serieId, genreId] of Object.entries(this.data.serieGenres)) {
+            if (genreId == currentGenre) {
+                series.options[series.options.length] = new Option(this.data.series[serieId], serieId);
+            }
+        }
     }
 }
