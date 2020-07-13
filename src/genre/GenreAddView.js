@@ -12,6 +12,7 @@ export class GenreAddView extends HTMLElement {
 
     connectedCallback() {
         this.render();
+        this.renderer.initUploadListener();
         this.renderer.focus();
     }
 
@@ -20,7 +21,7 @@ export class GenreAddView extends HTMLElement {
     }
 
     view() {
-        var entity = {id: "", name: "", displayOrder: 0, protectedGenre: "0", created: null, pictureFileName: null};
+        var entity = {id: "", name: "", displayOrder: 0, protectedGenre: "0", created: null, pictureFileName: null, pictureUrl: ""};
         var view = this.renderer.view(entity, false, true);
         let buttons = this.buttons();
         return html`${view}${buttons}`;

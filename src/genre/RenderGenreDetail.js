@@ -21,6 +21,7 @@ export class RenderGenreDetail {
         items.push(this.protectedGenre(readOnly, entity.protectedGenre));
         items.push(this.hidden("genrePictureFileName", entity.pictureFileName));
         items.push(this.hidden("genreCreated", entity.created));
+        items.push(this.thumbnail(readOnly, entity.thumbnailUrl));
 
         let title = this.title(isNew ? "New Genre" : "Genre");
 
@@ -54,6 +55,28 @@ export class RenderGenreDetail {
             <p>${text}</p>
         </div>
       </article>`;
+    }
+
+    thumbnail(readOnly, imageUrl) {
+        var upload = readOnly ? "" : html`<div class="file">
+        <label id="thumbnail" class="file-label">
+          <input class="file-input" type="file" name="resume" id="thumbnail">
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+              Choose a file…
+            </span>
+          </span>
+          <span class="file-name">
+      No file uploaded
+    </span>
+        </label>
+      </div>`;
+        return html`<figure class="image is-128x128">
+        <img class="is-rounded" src="${imageUrl}">
+      </figure>${upload}`;
     }
 
     hidden(id, value) {
@@ -128,5 +151,15 @@ export class RenderGenreDetail {
         document.querySelector("#errorMessage>div>p").innerText = err.ok === false
             ? (err.status + " " + err.statusText)
             : err;
+    }
+
+    initUploadListener() {
+        const fileInput = document.querySelector('#thumbnail input[type=file]');
+        fileInput.onchange = () => {
+            if (fileInput.files.length > 0) {
+                const fileName = document.querySelector('#thumbnail .file-name');
+                fileName.textContent = fileInput.files[0].name;
+            }
+        }
     }
 }

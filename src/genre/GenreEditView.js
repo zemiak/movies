@@ -19,6 +19,7 @@ export class GenreEditView extends HTMLElement {
     update() {
         this.data = this.service.getData(event.detail.key);
         render(this.view(), this);
+        this.renderer.initUploadListener();
         this.renderer.focus();
     }
 
