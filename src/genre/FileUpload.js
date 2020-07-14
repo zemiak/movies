@@ -16,6 +16,7 @@ export class FileUpload {
     upload() {
         var data = new FormData();
         data.append('file', this.file);
+        data.append('id', this.id);
 
         this.ctrl = document.querySelector("#thumbnailProgress");
         const xhr = new XMLHttpRequest();
@@ -34,7 +35,7 @@ export class FileUpload {
                 self.ctrl.value = "100";
             }, false);
 
-        const url = this.getBaseUri() + "/" + this.urlPart + "/thumbnail?id=" + this.id;
+        const url = this.getBaseUri() + "/" + this.urlPart + "/thumbnail";
 
         console.log("FileUpload.upload()/" + url);
 
