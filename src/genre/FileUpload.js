@@ -15,7 +15,7 @@ export class FileUpload {
 
     upload() {
         var data = new FormData();
-        data.append('file', this.file);
+        data.append('file', this.img);
         data.append('id', this.id);
 
         this.ctrl = document.querySelector("#thumbnailProgress");
@@ -27,7 +27,6 @@ export class FileUpload {
                 if (e.lengthComputable) {
                     const percentage = Math.round((e.loaded * 100) / e.total);
                     self.ctrl.value = percentage;
-                    console.log("FileUpload.upload()/percentage " + percentage);
                 }
             }, false);
 
@@ -37,10 +36,8 @@ export class FileUpload {
 
         const url = this.getBaseUri() + "/" + this.urlPart + "/thumbnail";
 
-        console.log("FileUpload.upload()/" + url);
-
         xhr.open("POST", url);
-        xhr.send();
+        xhr.send(data);
     }
 
     getBaseUri() {

@@ -75,7 +75,7 @@ export class RenderGenreDetail {
     </span>
         </label>
       </div>
-      <div style="padding-top: 1em;"><progress id="thumbnailProgress" max="100" value="0" class="progress is-hidden"></progress></div>`;
+      <div style="padding-top: 1em;"><progress id="thumbnailProgress" max="100" value="0" class="progress is-success is-hidden"></progress></div>`;
         return html`<figure class="image is-128x128">
         <img class="is-rounded" src="${imageUrl}">
       </figure>${upload}`;
