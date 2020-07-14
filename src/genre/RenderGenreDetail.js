@@ -1,4 +1,5 @@
 import { html } from "lit-html";
+import { FileUpload } from "/_dist_/genre/FileUpload.js";
 
 export class RenderGenreDetail {
     constructor(successMessage, errorMessage) {
@@ -60,7 +61,7 @@ export class RenderGenreDetail {
     thumbnail(readOnly, imageUrl) {
         var upload = readOnly ? "" : html`<div class="file">
         <label id="thumbnail" class="file-label">
-          <input class="file-input" type="file" name="resume" id="thumbnail">
+          <input class="file-input" type="file" name="resume" id="thumbnail" accept="image/*">
           <span class="file-cta">
             <span class="file-icon">
               <i class="fas fa-upload"></i>
@@ -73,7 +74,8 @@ export class RenderGenreDetail {
       No file uploaded
     </span>
         </label>
-      </div>`;
+      </div>
+      <div style="padding-top: 1em;"><progress id="thumbnailProgress" max="100" value="0" class="progress is-hidden"></progress></div>`;
         return html`<figure class="image is-128x128">
         <img class="is-rounded" src="${imageUrl}">
       </figure>${upload}`;
@@ -155,10 +157,16 @@ export class RenderGenreDetail {
 
     initUploadListener() {
         const fileInput = document.querySelector('#thumbnail input[type=file]');
+        const id = document.querySelector("#genreId").value;
         fileInput.onchange = () => {
             if (fileInput.files.length > 0) {
-                const fileName = document.querySelector('#thumbnail .file-name');
-                fileName.textContent = fileInput.files[0].name;
+                document.querySelector("#thumbnailProgress").classList.remove("is-hidden");
+
+                const file = fileInput.files[0];
+                const fileName = file.name;
+                const fileNameInput = document.querySelector('#thumbnail .file-name');
+                fileNameInput.textContent = fileName;
+                new FileUpload(file, file.file, "genres", id);
             }
         }
     }
