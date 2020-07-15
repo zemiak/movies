@@ -61,7 +61,7 @@ export class RenderGenreDetail {
     thumbnail(readOnly, imageUrl) {
         var upload = readOnly ? "" : html`<div class="file">
         <label id="thumbnail" class="file-label">
-          <input class="file-input" type="file" name="resume" id="thumbnail" accept="image/*">
+          <input class="file-input" type="file" name="resume" id="thumbnail" accept="image/jpeg">
           <span class="file-cta">
             <span class="file-icon">
               <i class="fas fa-upload"></i>
@@ -71,7 +71,7 @@ export class RenderGenreDetail {
             </span>
           </span>
           <span class="file-name">
-      No file uploaded
+      JPG images only
     </span>
         </label>
       </div>
