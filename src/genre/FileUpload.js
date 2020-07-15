@@ -31,7 +31,7 @@ export class FileUpload {
 
         xhr.upload.addEventListener("load", function(e){
                 self.ctrl.value = "100";
-                self.display.src = self.display.src + "&t=" + new Date().getTime();
+                window.setTimeout(_ => {self.display.src = self.display.src + "&t=" + new Date().getTime();}, 500);
                 self.ctrl.classList.add("is-hidden");
             }, false);
 
