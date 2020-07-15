@@ -8,8 +8,6 @@ export class FileUpload {
         this.id = id;
         this.config = new Config();
 
-        console.log("FileUpload.constructor()");
-
         this.upload();
     }
 
@@ -19,6 +17,7 @@ export class FileUpload {
         data.append('id', this.id);
 
         this.ctrl = document.querySelector("#thumbnailProgress");
+        this.display = document.querySelector("#thumbnailDisplay");
         const xhr = new XMLHttpRequest();
         this.xhr = xhr;
 
@@ -32,6 +31,8 @@ export class FileUpload {
 
         xhr.upload.addEventListener("load", function(e){
                 self.ctrl.value = "100";
+                self.display.src = self.display.src + "&t=" + new Date().getTime();
+                self.ctrl.classList.add("is-hidden");
             }, false);
 
         const url = this.getBaseUri() + "/" + this.urlPart + "/thumbnail";
