@@ -1,4 +1,5 @@
 import { html } from "lit-html";
+import { FileUpload } from "/_dist_/files/FileUpload.js";
 
 export class RenderSerieDetail {
     constructor(successMessage, errorMessage) {
@@ -22,6 +23,7 @@ export class RenderSerieDetail {
         items.push(this.tvShow(readOnly, entity.tvShow));
         items.push(this.hidden("seriePictureFileName", entity.pictureFileName));
         items.push(this.hidden("serieCreated", entity.created));
+        items.push(this.thumbnail(readOnly, entity.thumbnailUrl));
 
         let title = this.title(isNew ? "New Serie" : "Serie");
 
@@ -53,6 +55,29 @@ export class RenderSerieDetail {
             <p>${text}</p>
         </div>
       </article>`;
+    }
+
+    thumbnail(readOnly, imageUrl) {
+        var upload = readOnly ? "" : html`<div class="file">
+        <label id="thumbnail" class="file-label">
+          <input class="file-input" type="file" name="resume" id="thumbnail" accept="image/jpeg">
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+              Choose a file…
+            </span>
+          </span>
+          <span class="file-name">
+      JPG images only
+    </span>
+        </label>
+      </div>
+      <div style="padding-top: 1em;"><progress id="thumbnailProgress" max="100" value="0" class="progress is-success is-hidden"></progress></div>`;
+        return html`<figure class="image is-128x128">
+        <img class="is-rounded" id="thumbnailDisplay" src="${imageUrl}">
+      </figure>${upload}`;
     }
 
     genre(readOnly, genreId, genres) {
@@ -135,5 +160,21 @@ export class RenderSerieDetail {
         document.querySelector("#errorMessage>div>p").innerText = err.ok === false
             ? (err.status + " " + err.statusText)
             : err;
+    }
+
+    initUploadListener() {
+        const fileInput = document.querySelector('#thumbnail input[type=file]');
+        const id = document.querySelector("#genreId").value;
+        fileInput.onchange = () => {
+            if (fileInput.files.length > 0) {
+                document.querySelector("#thumbnailProgress").classList.remove("is-hidden");
+
+                const file = fileInput.files[0];
+                const fileName = file.name;
+                const fileNameInput = document.querySelector('#thumbnail .file-name');
+                fileNameInput.textContent = fileName;
+                new FileUpload(file, file.file, "genres", id);
+            }
+        }
     }
 }

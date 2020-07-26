@@ -1,5 +1,5 @@
 import { html } from "lit-html";
-import { FileUpload } from "/_dist_/genre/FileUpload.js";
+import { FileUpload } from "/_dist_/files/FileUpload.js";
 
 export class RenderGenreDetail {
     constructor(successMessage, errorMessage) {

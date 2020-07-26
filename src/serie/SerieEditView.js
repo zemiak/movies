@@ -12,13 +12,13 @@ export class SerieEditView extends HTMLElement {
 
     connectedCallback() {
         addEventListener(this.service.getCustomEventName(), e => this.update(e));
-        console.log("SerieEditView.connectedCallback");
         this.render();
     }
 
     update() {
         this.data = this.service.getData(event.detail.key);
         render(this.view(), this);
+        this.renderer.initUploadListener();
         this.renderer.focus();
     }
 

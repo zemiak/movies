@@ -14,13 +14,13 @@ export class MovieAddView extends HTMLElement {
 
     connectedCallback() {
         addEventListener(this.addservice.getCustomEventName(), e => this.update(e));
-        console.log("MovieEditView.connectedCallback");
         this.render();
     }
 
     update() {
         this.data = this.addservice.getData(event.detail.key);
         render(this.view(), this);
+        this.renderer.initUploadListener();
         this.renderer.focus();
     }
 
