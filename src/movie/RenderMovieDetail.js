@@ -6,6 +6,13 @@ export class RenderMovieDetail {
         this.successMessage = successMessage;
         this.errorMessage = errorMessage;
         this.genreChanged = this.genreChanged.bind(this);
+        this.selectItunesThumbnailClicked = this.selectItunesThumbnailClicked.bind(this);
+        this.selectItunesThumbnailSelectClicked = this.selectItunesThumbnailSelectClicked.bind(this);
+        this.selectItunesThumbnailCloseClicked = this.selectItunesThumbnailCloseClicked.bind(this);
+        this.selectItunesEmptyThumbnailCloseClicked = this.selectItunesEmptyThumbnailCloseClicked.bind(this);
+        this.selectItunesDetailThumbnailCloseClicked = this.selectItunesDetailThumbnailCloseClicked.bind(this);
+        this.selectItunesDetailThumbnailSaveClicked = this.selectItunesDetailThumbnailSaveClicked.bind(this);
+        window._RenderMovieDetail = this;
     }
 
     view(entity, readOnly, isNew) {
@@ -34,12 +41,11 @@ export class RenderMovieDetail {
         items.push(this.hidden("movieWebPage", entity.webPage));
         items.push(this.hidden("movieYear", entity.year));
         items.push(this.thumbnail(readOnly, entity.thumbnailUrl));
+        items.push(this.selectItunesThumbnailModal(readOnly));
 
         this.data = entity;
 
         let title = this.title(isNew ? "New Movie" : "Movie");
-
-        console.log(entity);
 
         return html`${title}<form class="form-horizontal"><fieldset>${items}</fieldset></form><p>&nbsp;</p>`;
     }
@@ -207,7 +213,7 @@ export class RenderMovieDetail {
 
     initUploadListener() {
         const fileInput = document.querySelector('#thumbnail input[type=file]');
-        const id = document.querySelector("#genreId").value;
+        const id = document.querySelector("#movieId").value;
         fileInput.onchange = () => {
             if (fileInput.files.length > 0) {
                 document.querySelector("#thumbnailProgress").classList.remove("is-hidden");
@@ -219,5 +225,117 @@ export class RenderMovieDetail {
                 new FileUpload(file, file.file, "genres", id);
             }
         }
+    }
+
+    selectItunesThumbnailClicked(event) {
+        this.itunesCallback(document.querySelector("#movieName").value);
+    }
+
+    selectItunesThumbnailSelectClicked(event) {
+        var anchor = event.target.closest("a");
+        var id = anchor.getAttribute("data-id");
+        var url = this.itunesData[id].artworkUrl;
+        var dataUrl = encodeURIComponent(btoa(url));
+        render(html`<center><figure data-url="${dataUrl}" class="image is-128x128"><img src="${url}"></figure></center>`, document.querySelector("#itunesDetail"));
+        document.querySelector("#itunesDetailTitle").innerText = this.itunesData[id].trackName;
+        document.querySelector("#itunesModalDetail").classList.toggle("is-active");
+    }
+
+    selectItunesThumbnailCloseClicked() {
+        document.querySelector("#itunesModal").classList.toggle("is-active");
+    }
+
+    selectItunesEmptyThumbnailCloseClicked() {
+        document.querySelector("#itunesModalEmpty").classList.toggle("is-active");
+    }
+
+    selectItunesDetailThumbnailCloseClicked() {
+        document.querySelector("#itunesModalDetail").classList.toggle("is-active");
+    }
+
+    selectItunesDetailThumbnailSaveClicked() {
+        var figure = document.querySelector("#itunesDetail>figure");
+        console.log("selectItunesDetailThumbnailSaveClicked", figure);
+    }
+
+    updateItunesThumbnails(data) {
+        if (0 == data.length) {
+            document.querySelector("#itunesTitle").innerText = document.querySelector("#movieName").value;
+            document.querySelector("#itunesModalEmpty").classList.toggle("is-active");
+            return;
+        }
+
+        this.itunesData = data;
+
+        var items = [];
+        var i = 0;
+        data.forEach(element => {
+            items.push(html`<a href="#" class="panel-block" style="height: 50px;" data-id="${i}" id="itunes_${i}">
+            <span class="panel-icon">
+              <figure class="image is-16x16"><img src="${element.artworkUrl}"></figure>
+            </span>
+            <div style="padding-left: 1em;">${element.trackName}</div>
+          </a>`);
+            i++;
+        });
+        render(html`<nav class="panel">${items}</nav>`, document.querySelector("#itunesList"));
+        for (var i = 0; i < data.length; i++) {
+            document.querySelector("#itunes_" + i).addEventListener("click", event => {this.selectItunesThumbnailSelectClicked(event)})
+        }
+        document.querySelector("#itunesModal").classList.toggle("is-active");
+    }
+
+    setItunesCallback(itunesCallback) {
+        this.itunesCallback = itunesCallback;
+    }
+
+    selectItunesThumbnailModal(readOnly) {
+        if (readOnly) {
+            return html``;
+        }
+
+        var button = html`<button type="button" class="button is-link is-light" @click="${this.selectItunesThumbnailClicked}">iTunes Thumbnail</button>`;
+        var listOfArtwork = html`<div class="modal" id="itunesModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">iTunes Artwork</p>
+                <button class="delete" aria-label="close" type="button" @click="${this.selectItunesThumbnailCloseClicked}"></button>
+            </header>
+            <section class="modal-card-body">
+                <div id="itunesList"></div>
+            </section>
+            </div>
+        </div>`;
+        var emptyResult = html`<div class="modal" id="itunesModalEmpty">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">iTunes Artwork</p>
+                <button class="delete" aria-label="close" type="button" @click="${this.selectItunesEmptyThumbnailCloseClicked}"></button>
+            </header>
+            <section class="modal-card-body">
+                The iTunes service returned an empty result for <b><span id="itunesTitle"></span></b>.
+            </section>
+            </div>
+        </div>`;
+        var artworkDetail = html`<div class="modal" id="itunesModalDetail">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title" id="itunesDetailTitle"></p>
+                <button class="delete" aria-label="close" type="button" @click="${this.selectItunesDetailThumbnailCloseClicked}"></button>
+            </header>
+            <section class="modal-card-body">
+                <div id="itunesDetail" style="height:230px;"></div>
+            </section>
+            <footer class="modal-card-foot">
+                <button type="button" class="button is-success" @click="${this.selectItunesDetailThumbnailSaveClicked}">Save</button>
+                <button type="button" class="button" @click="${this.selectItunesDetailThumbnailCloseClicked}">Cancel</button>
+            </footer>
+            </div>
+        </div>`;
+
+        return html`${button} ${listOfArtwork} ${emptyResult} ${artworkDetail}`;
     }
 }

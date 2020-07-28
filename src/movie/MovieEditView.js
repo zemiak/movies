@@ -1,17 +1,21 @@
 import { html, render } from "lit-html";
 import { RenderMovieDetail } from "/_dist_/movie/RenderMovieDetail.js";
 import { MovieDetailService } from "/_dist_/movie/MovieDetailService.js";
+import { MovieItunesService } from "/_dist_/movie/MovieItunesService.js";
 
 export class MovieEditView extends HTMLElement {
     constructor() {
         super();
         this.renderer = new RenderMovieDetail("Successfully saved", "Save error");
+        this.renderer.setItunesCallback((name) => {this.fetchItunesThumbnails(name)});
         this.service = new MovieDetailService();
+        this.itunesService = new MovieItunesService();
         this.saveClick = this.saveClick.bind(this);
     }
 
     connectedCallback() {
         addEventListener(this.service.getCustomEventName(), e => this.update(e));
+        addEventListener(this.itunesService.getCustomEventName(), e => this.updateItunesThumbnails(e));
         this.render();
     }
 
@@ -20,6 +24,15 @@ export class MovieEditView extends HTMLElement {
         render(this.view(), this);
         this.renderer.initUploadListener();
         this.renderer.focus();
+    }
+
+    updateItunesThumbnails() {
+        this.renderer.updateItunesThumbnails(this.itunesService.getData(event.detail.key));
+    }
+
+    fetchItunesThumbnails(name) {
+        this.itunesService.setName(name);
+        this.itunesService.fetchData();
     }
 
     render() {
@@ -49,7 +62,6 @@ export class MovieEditView extends HTMLElement {
     saveClick(event) {
         document.querySelector("#saveButton").disabled = "disabled";
         var item = this.renderer.getFormData();
-        console.log("MovieEditView.saveClick - sending data", item);
         this.service.saveOrUpdate(item,
             response => this.saveSuccess(response),
             err => this.saveError(err)
@@ -62,13 +74,11 @@ export class MovieEditView extends HTMLElement {
             return;
         }
 
-        console.log("MovieEditView.saveSuccess", response);
         this.renderer.showSuccess();
         setTimeout(_ => window.location = "/admin/movies", 1500);
     }
 
     saveError(err) {
-        console.log("MovieEditView.saveError", err);
         this.renderer.showError(err);
         setTimeout(_ => window.location = "/admin/movies", 3000);
     }

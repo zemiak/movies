@@ -164,7 +164,7 @@ export class RenderSerieDetail {
 
     initUploadListener() {
         const fileInput = document.querySelector('#thumbnail input[type=file]');
-        const id = document.querySelector("#genreId").value;
+        const id = document.querySelector("#serieId").value;
         fileInput.onchange = () => {
             if (fileInput.files.length > 0) {
                 document.querySelector("#thumbnailProgress").classList.remove("is-hidden");
