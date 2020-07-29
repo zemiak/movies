@@ -194,6 +194,7 @@ export class RenderMovieDetail {
     }
 
     showSuccess() {
+        document.querySelector("#successMessage>div>p").innerText = this.successMessage;
         document.querySelector("#successMessage").classList.remove("is-hidden");
     }
 
@@ -340,5 +341,24 @@ export class RenderMovieDetail {
         </div>`;
 
         return html`${button} ${listOfArtwork} ${emptyResult} ${artworkDetail}`;
+    }
+
+    showSuccessItunesThumbnail() {
+        document.querySelector("#itunesModalDetail").classList.toggle("is-active");
+        document.querySelector("#itunesModal").classList.toggle("is-active");
+        document.querySelector("#successMessage").classList.remove("is-hidden");
+        document.querySelector("#successMessage>div>p").innerText = "Thumbnail updated";
+
+        let thumbnail = document.querySelector("#thumbnailDisplay");
+        window.setTimeout(_ => {thumbnail.src = thumbnail.src + "&t=" + new Date().getTime();}, 500);
+    }
+
+    showErrorItunesThumbnail(err) {
+        document.querySelector("#itunesModalDetail").classList.toggle("is-active");
+        document.querySelector("#itunesModal").classList.toggle("is-active");
+        document.querySelector("#errorMessage").classList.remove("is-hidden");
+        document.querySelector("#errorMessage>div>p").innerText = err.ok === false
+            ? (err.status + " " + err.statusText)
+            : err;
     }
 }

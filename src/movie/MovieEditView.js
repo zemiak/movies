@@ -40,8 +40,8 @@ export class MovieEditView extends HTMLElement {
     saveItunesThumbnails(url) {
         var id = this.location.params.id;
         this.itunesService.saveThumbnail(id, url,
-            response => this.saveSuccess(response),
-            err => this.saveError(err));
+            response => this.saveSuccessItunesThumbnail(response),
+            err => this.saveErrorItunesThumbnail(err));
     }
 
     render() {
@@ -90,6 +90,19 @@ export class MovieEditView extends HTMLElement {
     saveError(err) {
         this.renderer.showError(err);
         setTimeout(_ => window.location = "/admin/movies", 3000);
+    }
+
+    saveSuccessItunesThumbnail(response) {
+        if (! response.ok) {
+            this.saveErrorItunesThumbnail(response);
+            return;
+        }
+
+        this.renderer.showSuccessItunesThumbnail();
+    }
+
+    saveErrorItunesThumbnail(err) {
+        this.renderer.showErrorItunesThumbnail(err);
     }
 
     cancelClick(event) {
