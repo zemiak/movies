@@ -16,4 +16,12 @@ export class MovieItunesService extends RestClientService {
     setName(name) {
         this.name = name;
     }
+
+    saveThumbnail(id, url, success, error) {
+        var url = "/movies/" + id + "/thumbnail/url";
+
+        fetch(this.getBaseUri() + url, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({url: url})})
+            .then(response => success(response))
+            .catch(err => error(err));
+    }
 }

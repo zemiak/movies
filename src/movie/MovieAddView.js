@@ -6,7 +6,7 @@ import { MovieAddService } from "/_dist_/movie/MovieAddService.js";
 export class MovieAddView extends HTMLElement {
     constructor() {
         super();
-        this.renderer = new RenderMovieDetail("Successfully added", "Add error");
+        this.renderer = new RenderMovieDetail("Successfully added", "Add error", null, null);
         this.service = new MovieDetailService();
         this.addservice = new MovieAddService();
         this.saveClick = this.saveClick.bind(this);

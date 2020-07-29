@@ -2,7 +2,7 @@ import { html, render } from "lit-html";
 import { FileUpload } from "/_dist_/files/FileUpload.js";
 
 export class RenderMovieDetail {
-    constructor(successMessage, errorMessage) {
+    constructor(successMessage, errorMessage, itunesCallback, itunesSaveCallback) {
         this.successMessage = successMessage;
         this.errorMessage = errorMessage;
         this.genreChanged = this.genreChanged.bind(this);
@@ -12,7 +12,8 @@ export class RenderMovieDetail {
         this.selectItunesEmptyThumbnailCloseClicked = this.selectItunesEmptyThumbnailCloseClicked.bind(this);
         this.selectItunesDetailThumbnailCloseClicked = this.selectItunesDetailThumbnailCloseClicked.bind(this);
         this.selectItunesDetailThumbnailSaveClicked = this.selectItunesDetailThumbnailSaveClicked.bind(this);
-        window._RenderMovieDetail = this;
+        this.itunesCallback = itunesCallback;
+        this.itunesSaveCallback = itunesSaveCallback;
     }
 
     view(entity, readOnly, isNew) {
@@ -40,8 +41,11 @@ export class RenderMovieDetail {
         items.push(this.hidden("movieUrl", entity.url));
         items.push(this.hidden("movieWebPage", entity.webPage));
         items.push(this.hidden("movieYear", entity.year));
-        items.push(this.thumbnail(readOnly, entity.thumbnailUrl));
-        items.push(this.selectItunesThumbnailModal(readOnly));
+
+        if (! isNew) {
+            items.push(this.thumbnail(readOnly, entity.thumbnailUrl));
+            items.push(this.selectItunesThumbnailModal(readOnly));
+        }
 
         this.data = entity;
 
@@ -235,8 +239,7 @@ export class RenderMovieDetail {
         var anchor = event.target.closest("a");
         var id = anchor.getAttribute("data-id");
         var url = this.itunesData[id].artworkUrl;
-        var dataUrl = encodeURIComponent(btoa(url));
-        render(html`<center><figure data-url="${dataUrl}" class="image is-128x128"><img src="${url}"></figure></center>`, document.querySelector("#itunesDetail"));
+        render(html`<center><figure class="image is-128x128"><img src="${url}"></figure></center>`, document.querySelector("#itunesDetail"));
         document.querySelector("#itunesDetailTitle").innerText = this.itunesData[id].trackName;
         document.querySelector("#itunesModalDetail").classList.toggle("is-active");
     }
@@ -254,8 +257,8 @@ export class RenderMovieDetail {
     }
 
     selectItunesDetailThumbnailSaveClicked() {
-        var figure = document.querySelector("#itunesDetail>figure");
-        console.log("selectItunesDetailThumbnailSaveClicked", figure);
+        var image = document.querySelector("#itunesDetail>center>figure>img");
+        this.itunesSaveCallback(image.src);
     }
 
     updateItunesThumbnails(data) {

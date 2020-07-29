@@ -6,8 +6,10 @@ import { MovieItunesService } from "/_dist_/movie/MovieItunesService.js";
 export class MovieEditView extends HTMLElement {
     constructor() {
         super();
-        this.renderer = new RenderMovieDetail("Successfully saved", "Save error");
-        this.renderer.setItunesCallback((name) => {this.fetchItunesThumbnails(name)});
+        this.renderer = new RenderMovieDetail("Successfully saved", "Save error",
+            (name) => {this.fetchItunesThumbnails(name)},
+            (name) => {this.saveItunesThumbnails(name)}
+        );
         this.service = new MovieDetailService();
         this.itunesService = new MovieItunesService();
         this.saveClick = this.saveClick.bind(this);
@@ -33,6 +35,13 @@ export class MovieEditView extends HTMLElement {
     fetchItunesThumbnails(name) {
         this.itunesService.setName(name);
         this.itunesService.fetchData();
+    }
+
+    saveItunesThumbnails(url) {
+        var id = this.location.params.id;
+        this.itunesService.saveThumbnail(id, url,
+            response => this.saveSuccess(response),
+            err => this.saveError(err));
     }
 
     render() {
