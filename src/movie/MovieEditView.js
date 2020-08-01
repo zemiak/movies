@@ -1,23 +1,42 @@
 import { html, render } from "lit-html";
 import { RenderMovieDetail } from "/_dist_/movie/RenderMovieDetail.js";
 import { MovieDetailService } from "/_dist_/movie/MovieDetailService.js";
-import { MovieItunesService } from "/_dist_/movie/MovieItunesService.js";
+import { MovieItunesService } from "/_dist_/movie/itunes/MovieItunesService.js";
+import { MovieCsfdService } from "/_dist_/movie/csfd/MovieCsfdService.js";
 
 export class MovieEditView extends HTMLElement {
     constructor() {
         super();
         this.renderer = new RenderMovieDetail("Successfully saved", "Save error",
-            (name) => {this.fetchItunesThumbnails(name)},
-            (name) => {this.saveItunesThumbnails(name)}
+            {
+                "itunes": {
+                    "fetch": (name) => {this.fetchItunesThumbnails(name)},
+                    "save": (name) => {this.saveItunesThumbnails(name)}
+                },
+
+                "csfd": {
+                    "fetch": (name) => {this.fetchCsfdThumbnails(name)},
+                    "save": (name) => {this.saveCsfdThumbnails(name)}
+                },
+
+                "imdb": {
+                    "fetch": (name) => {this.fetchImdbThumbnails(name)},
+                    "save": (name) => {this.saveImdbThumbnails(name)}
+                }
+            }
         );
         this.service = new MovieDetailService();
         this.itunesService = new MovieItunesService();
+        this.csfdService = new MovieCsfdService();
+        this.imdbService = new MovieImdbService();
         this.saveClick = this.saveClick.bind(this);
     }
 
     connectedCallback() {
         addEventListener(this.service.getCustomEventName(), e => this.update(e));
         addEventListener(this.itunesService.getCustomEventName(), e => this.updateItunesThumbnails(e));
+        addEventListener(this.csfdService.getCustomEventName(), e => this.updateCsfdThumbnails(e));
+        addEventListener(this.imdbService.getCustomEventName(), e => this.updateImdbThumbnails(e));
         this.render();
     }
 
@@ -42,6 +61,38 @@ export class MovieEditView extends HTMLElement {
         this.itunesService.saveThumbnail(id, url,
             response => this.saveSuccessItunesThumbnail(response),
             err => this.saveErrorItunesThumbnail(err));
+    }
+
+    updateCsfdThumbnails() {
+        this.renderer.updateCsfdThumbnails(this.csfdService.getData(event.detail.key));
+    }
+
+    fetchCsfdThumbnails(name) {
+        this.csfdService.setName(name);
+        this.csfdService.fetchData();
+    }
+
+    saveCsfdThumbnails(url) {
+        var id = this.location.params.id;
+        this.csfdService.saveThumbnail(id, url,
+            response => this.saveSuccessCsfdThumbnail(response),
+            err => this.saveErrorCsfdThumbnail(err));
+    }
+
+    updateImdbThumbnails() {
+        this.renderer.updateImdbThumbnails(this.imdbService.getData(event.detail.key));
+    }
+
+    fetchImdbThumbnails(name) {
+        this.imdbService.setName(name);
+        this.imdbService.fetchData();
+    }
+
+    saveImdbThumbnails(url) {
+        var id = this.location.params.id;
+        this.imdbService.saveThumbnail(id, url,
+            response => this.saveSuccessImdbThumbnail(response),
+            err => this.saveErrorImdbThumbnail(err));
     }
 
     render() {

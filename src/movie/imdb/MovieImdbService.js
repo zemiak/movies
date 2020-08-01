@@ -1,16 +1,16 @@
-import { RestClientService } from "../RestClientService.js";
+import { RestClientService } from "../../RestClientService.js";
 
-export class MovieItunesService extends RestClientService {
+export class MovieImdbService extends RestClientService {
     constructor() {
         super();
     }
 
     getCustomEventName() {
-        return "MovieItunesService";
+        return "MovieImdbService";
     }
 
     getServicePath() {
-        return "/metadata/itunes/" + encodeURI(this.name);
+        return "/movies/metadata/imdb/" + encodeURI(this.name);
     }
 
     setName(name) {
@@ -18,7 +18,7 @@ export class MovieItunesService extends RestClientService {
     }
 
     saveThumbnail(id, url, success, error) {
-        fetch(this.getBaseUri() + "/movies/" + id + "/thumbnail/url",
+        fetch(this.getBaseUri() + "/movies/" + id + "/metadata/imdb",
              {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({url: url})})
             .then(response => success(response))
             .catch(err => error(err));
