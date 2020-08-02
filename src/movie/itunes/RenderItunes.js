@@ -14,6 +14,7 @@ export class RenderItunes {
     }
 
     chooseButtonClicked(event) {
+        window._RenderItunes_detailClick = this.artworkItemClick;
         let currentName = document.querySelector("#movieName").value
 
         if (this.lastName != currentName) {
@@ -24,8 +25,8 @@ export class RenderItunes {
         }
     }
 
-    artworkItemClick(event) {
-        var anchor = event.target.closest("a");
+    artworkItemClick(anchor) {
+        console.log(anchor);
         var id = anchor.getAttribute("data-id");
         var url = this.itunesData[id].artworkUrl;
         render(html`<center><figure class="image is-128x128"><img src="${url}"></figure></center>`, document.querySelector("#itunesDetail"));
@@ -65,7 +66,7 @@ export class RenderItunes {
         var items = [];
         var i = 0;
         data.forEach(element => {
-            items.push(html`<a href="#" class="panel-block" style="height: 50px;" data-id="${i}" id="itunes_${i}">
+            items.push(html`<a href="javascript:void(0)" onclick="javascript:window._RenderItunes_detailClick(this)" class="panel-block" style="height: 50px;" data-id="${i}">
             <span class="panel-icon">
               <figure class="image is-16x16"><img src="${element.artworkUrl}"></figure>
             </span>
@@ -74,9 +75,6 @@ export class RenderItunes {
             i++;
         });
         render(html`<nav class="panel">${items}</nav>`, document.querySelector("#itunesList"));
-        for (var i = 0; i < data.length; i++) {
-            document.querySelector("#itunes_" + i).addEventListener("click", event => {this.artworkItemClick(event)})
-        }
         document.querySelector("#itunesModal").classList.toggle("is-active");
     }
 

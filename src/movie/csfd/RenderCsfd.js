@@ -14,6 +14,7 @@ export class RenderCsfd {
     }
 
     chooseButtonClicked(event) {
+        window._RenderCsfd_detailClick = this.artworkItemClick;
         let currentName = document.querySelector("#movieName").value
 
         if (this.lastName != currentName) {
@@ -24,8 +25,7 @@ export class RenderCsfd {
         }
     }
 
-    artworkItemClick(event) {
-        var anchor = event.target.closest("a");
+    artworkItemClick(anchor) {
         var id = anchor.getAttribute("data-id");
         var url = this.csfdData[id].imageUrl;
         render(html`<center><figure class="image is-128x128"><img src="${url}"></figure></center>`, document.querySelector("#csfdDetail"));
@@ -65,7 +65,7 @@ export class RenderCsfd {
         var items = [];
         var i = 0;
         data.forEach(element => {
-            items.push(html`<a href="#" class="panel-block" style="height: 50px;" data-id="${i}" id="csfd_${i}">
+            items.push(html`<a href="javascript:void(0)" onclick="javascript:window._RenderCsfd_detailClick(this)" class="panel-block" style="height: 50px;" data-id="${i}">
             <span class="panel-icon">
               <figure class="image is-16x16"><img src="${element.imageUrl}"></figure>
             </span>
@@ -74,9 +74,6 @@ export class RenderCsfd {
             i++;
         });
         render(html`<nav class="panel">${items}</nav>`, document.querySelector("#csfdList"));
-        for (var i = 0; i < data.length; i++) {
-            document.querySelector("#csfd_" + i).addEventListener("click", event => {this.artworkItemClick(event)})
-        }
         document.querySelector("#csfdModal").classList.toggle("is-active");
     }
 
