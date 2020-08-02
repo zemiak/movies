@@ -19,9 +19,10 @@ export class RenderImdb {
     artworkItemClick(event) {
         var anchor = event.target.closest("a");
         var id = anchor.getAttribute("data-id");
-        var url = this.imdbData[id].artworkUrl;
+        var url = this.imdbData[id].imageUrl;
         render(html`<center><figure class="image is-128x128"><img src="${url}"></figure></center>`, document.querySelector("#imdbDetail"));
-        document.querySelector("#imdbDetailTitle").innerText = this.imdbData[id].trackName;
+        document.querySelector("#imdbDetailTitle").innerText = this.imdbData[id].description;
+        document.querySelector("#imdbDetailTitle").setAttribute("data-id", id);
         document.querySelector("#imdbModalDetail").classList.toggle("is-active");
     }
 
@@ -38,8 +39,10 @@ export class RenderImdb {
     }
 
     artworkDetailSave() {
-        var image = document.querySelector("#imdbDetail>center>figure>img");
-        this.imdbSaveCallback(image.src);
+        var anchor = document.querySelector("#imdbDetailTitle");
+        var id = anchor.getAttribute("data-id");
+        var data = this.imdbData[id];
+        this.imdbSaveCallback(data);
     }
 
     updateImdbThumbnails(data) {
@@ -56,9 +59,9 @@ export class RenderImdb {
         data.forEach(element => {
             items.push(html`<a href="#" class="panel-block" style="height: 50px;" data-id="${i}" id="imdb_${i}">
             <span class="panel-icon">
-              <figure class="image is-16x16"><img src="${element.artworkUrl}"></figure>
+              <figure class="image is-16x16"><img src="${element.imageUrl}"></figure>
             </span>
-            <div style="padding-left: 1em;">${element.trackName}</div>
+            <div style="padding-left: 1em;">${element.description}</div>
           </a>`);
             i++;
         });
@@ -74,12 +77,12 @@ export class RenderImdb {
             return html``;
         }
 
-        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseImdbArtwork}">imdb Thumbnail</button>`;
+        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseImdbArtwork}">IMDB</button>`;
         var listOfArtwork = html`<div class="modal" id="imdbModal">
             <div class="modal-background"></div>
             <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title">imdb Artwork</p>
+                <p class="modal-card-title">IMDB Artwork</p>
                 <button class="delete" aria-label="close" type="button" @click="${this.artworkListClose}"></button>
             </header>
             <section class="modal-card-body">
@@ -91,11 +94,11 @@ export class RenderImdb {
             <div class="modal-background"></div>
             <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title">imdb Artwork</p>
+                <p class="modal-card-title">IMDB Artwork</p>
                 <button class="delete" aria-label="close" type="button" @click="${this.artworkEmptyClose}"></button>
             </header>
             <section class="modal-card-body">
-                The imdb service returned an empty result for <b><span id="imdbTitle"></span></b>.
+                The IMDB service returned an empty result for <b><span id="imdbTitle"></span></b>.
             </section>
             </div>
         </div>`;
@@ -103,7 +106,7 @@ export class RenderImdb {
             <div class="modal-background"></div>
             <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title" id="imdbDetailTitle"></p>
+                <p class="modal-card-title" id="imdbDetailTitle" data-id="x"></p>
                 <button class="delete" aria-label="close" type="button" @click="${this.artworkDetailClose}"></button>
             </header>
             <section class="modal-card-body">
@@ -119,11 +122,18 @@ export class RenderImdb {
         return html`${button} ${listOfArtwork} ${emptyResult} ${artworkDetail}`;
     }
 
-    showSuccessImdbThumbnail() {
+    showSuccessImdbThumbnail(response) {
         document.querySelector("#imdbModalDetail").classList.toggle("is-active");
         document.querySelector("#imdbModal").classList.toggle("is-active");
         document.querySelector("#successMessage").classList.remove("is-hidden");
-        document.querySelector("#successMessage>div>p").innerText = "Thumbnail updated";
+        document.querySelector("#successMessage>div>p").innerText = "Metadata updated";
+
+        response.json().then(data => {
+            document.querySelector("#movieDescription").value = data.description;
+            if (data.year) {
+                document.querySelector("#movieYear").value = data.year;
+            }
+        })
 
         let thumbnail = document.querySelector("#thumbnailDisplay");
         window.setTimeout(_ => {thumbnail.src = thumbnail.src + "&t=" + new Date().getTime();}, 500);

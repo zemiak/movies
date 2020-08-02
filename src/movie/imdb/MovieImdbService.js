@@ -10,16 +10,16 @@ export class MovieImdbService extends RestClientService {
     }
 
     getServicePath() {
-        return "/movies/metadata/imdb/" + encodeURI(this.name);
+        return "/metadata/imdb/" + encodeURI(this.name);
     }
 
     setName(name) {
         this.name = name;
     }
 
-    saveThumbnail(id, url, success, error) {
-        fetch(this.getBaseUri() + "/movies/" + id + "/metadata/imdb",
-             {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({url: url})})
+    saveThumbnail(id, data, success, error) {
+        fetch(this.getBaseUri() + "/metadata/imdb/" + id,
+             {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data)})
             .then(response => success(response))
             .catch(err => error(err));
     }

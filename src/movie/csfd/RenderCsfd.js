@@ -19,9 +19,10 @@ export class RenderCsfd {
     artworkItemClick(event) {
         var anchor = event.target.closest("a");
         var id = anchor.getAttribute("data-id");
-        var url = this.csfdData[id].artworkUrl;
+        var url = this.csfdData[id].imageUrl;
         render(html`<center><figure class="image is-128x128"><img src="${url}"></figure></center>`, document.querySelector("#csfdDetail"));
-        document.querySelector("#csfdDetailTitle").innerText = this.csfdData[id].trackName;
+        document.querySelector("#csfdDetailTitle").innerText = this.csfdData[id].description;
+        document.querySelector("#csfdDetailTitle").setAttribute("data-id", id);
         document.querySelector("#csfdModalDetail").classList.toggle("is-active");
     }
 
@@ -38,8 +39,10 @@ export class RenderCsfd {
     }
 
     artworkDetailSave() {
-        var image = document.querySelector("#csfdDetail>center>figure>img");
-        this.csfdSaveCallback(image.src);
+        var anchor = document.querySelector("#csfdDetailTitle");
+        var id = anchor.getAttribute("data-id");
+        var data = this.csfdData[id];
+        this.csfdSaveCallback(data);
     }
 
     updateCsfdThumbnails(data) {
@@ -56,9 +59,9 @@ export class RenderCsfd {
         data.forEach(element => {
             items.push(html`<a href="#" class="panel-block" style="height: 50px;" data-id="${i}" id="csfd_${i}">
             <span class="panel-icon">
-              <figure class="image is-16x16"><img src="${element.artworkUrl}"></figure>
+              <figure class="image is-16x16"><img src="${element.imageUrl}"></figure>
             </span>
-            <div style="padding-left: 1em;">${element.trackName}</div>
+            <div style="padding-left: 1em;">${element.description}</div>
           </a>`);
             i++;
         });
@@ -74,12 +77,12 @@ export class RenderCsfd {
             return html``;
         }
 
-        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseCsfdArtwork}">csfd Thumbnail</button>`;
+        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseCsfdArtwork}">CSFD</button>`;
         var listOfArtwork = html`<div class="modal" id="csfdModal">
             <div class="modal-background"></div>
             <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title">csfd Artwork</p>
+                <p class="modal-card-title">CSFD Artwork</p>
                 <button class="delete" aria-label="close" type="button" @click="${this.artworkListClose}"></button>
             </header>
             <section class="modal-card-body">
@@ -91,11 +94,11 @@ export class RenderCsfd {
             <div class="modal-background"></div>
             <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title">csfd Artwork</p>
+                <p class="modal-card-title">CSFD Artwork</p>
                 <button class="delete" aria-label="close" type="button" @click="${this.artworkEmptyClose}"></button>
             </header>
             <section class="modal-card-body">
-                The csfd service returned an empty result for <b><span id="csfdTitle"></span></b>.
+                The CSFD service returned an empty result for <b><span id="csfdTitle"></span></b>.
             </section>
             </div>
         </div>`;
@@ -103,7 +106,7 @@ export class RenderCsfd {
             <div class="modal-background"></div>
             <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title" id="csfdDetailTitle"></p>
+                <p class="modal-card-title" id="csfdDetailTitle" data-id="x"></p>
                 <button class="delete" aria-label="close" type="button" @click="${this.artworkDetailClose}"></button>
             </header>
             <section class="modal-card-body">
@@ -119,11 +122,18 @@ export class RenderCsfd {
         return html`${button} ${listOfArtwork} ${emptyResult} ${artworkDetail}`;
     }
 
-    showSuccessCsfdThumbnail() {
+    showSuccessCsfdThumbnail(response) {
         document.querySelector("#csfdModalDetail").classList.toggle("is-active");
         document.querySelector("#csfdModal").classList.toggle("is-active");
         document.querySelector("#successMessage").classList.remove("is-hidden");
-        document.querySelector("#successMessage>div>p").innerText = "Thumbnail updated";
+        document.querySelector("#successMessage>div>p").innerText = "Metadata updated";
+
+        response.json().then(data => {
+            document.querySelector("#movieDescription").value = data.description;
+            if (data.year) {
+                document.querySelector("#movieYear").value = data.year;
+            }
+        })
 
         let thumbnail = document.querySelector("#thumbnailDisplay");
         window.setTimeout(_ => {thumbnail.src = thumbnail.src + "&t=" + new Date().getTime();}, 500);

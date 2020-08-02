@@ -10,16 +10,16 @@ export class MovieCsfdService extends RestClientService {
     }
 
     getServicePath() {
-        return "/movies/metadata/csfd/" + encodeURI(this.name);
+        return "/metadata/csfd/" + encodeURI(this.name);
     }
 
     setName(name) {
         this.name = name;
     }
 
-    saveThumbnail(id, url, success, error) {
-        fetch(this.getBaseUri() + "/movies/" + id + "/metadata/csfd",
-             {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({url: url})})
+    saveThumbnail(id, data, success, error) {
+        fetch(this.getBaseUri() + "/metadata/csfd/" + id,
+             {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data)})
             .then(response => success(response))
             .catch(err => error(err));
     }

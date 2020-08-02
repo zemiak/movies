@@ -22,6 +22,7 @@ export class RenderItunes {
         var url = this.itunesData[id].artworkUrl;
         render(html`<center><figure class="image is-128x128"><img src="${url}"></figure></center>`, document.querySelector("#itunesDetail"));
         document.querySelector("#itunesDetailTitle").innerText = this.itunesData[id].trackName;
+        document.querySelector("#itunesDetailTitle").setAttribute("data-id", id);
         document.querySelector("#itunesModalDetail").classList.toggle("is-active");
     }
 
@@ -38,8 +39,10 @@ export class RenderItunes {
     }
 
     artworkDetailSave() {
-        var image = document.querySelector("#itunesDetail>center>figure>img");
-        this.itunesSaveCallback(image.src);
+        var anchor = document.querySelector("#itunesDetailTitle");
+        var id = anchor.getAttribute("data-id");
+        var data = this.csfdData[id].artworkUrl;
+        this.itunesSaveCallback(data);
     }
 
     updateItunesThumbnails(data) {
@@ -74,7 +77,7 @@ export class RenderItunes {
             return html``;
         }
 
-        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseItunesArtwork}">iTunes Thumbnail</button>`;
+        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseItunesArtwork}">iTunes</button>`;
         var listOfArtwork = html`<div class="modal" id="itunesModal">
             <div class="modal-background"></div>
             <div class="modal-card">
@@ -103,7 +106,7 @@ export class RenderItunes {
             <div class="modal-background"></div>
             <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title" id="itunesDetailTitle"></p>
+                <p class="modal-card-title" id="itunesDetailTitle" data-id="x"></p>
                 <button class="delete" aria-label="close" type="button" @click="${this.artworkDetailClose}"></button>
             </header>
             <section class="modal-card-body">

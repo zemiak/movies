@@ -38,7 +38,7 @@ export class RenderMovieDetail {
         items.push(this.hidden("movieFileName", entity.fileName));
         items.push(this.hidden("movieUrl", entity.url));
         items.push(this.hidden("movieWebPage", entity.webPage));
-        items.push(this.hidden("movieYear", entity.year));
+        items.push(this.text("movieYear", "Year", readOnly, entity.year));
 
         if (! isNew) {
             items.push(this.thumbnail(readOnly, entity.thumbnailUrl));
@@ -242,5 +242,37 @@ export class RenderMovieDetail {
 
     updateImdbThumbnails(data) {
         this.renderImdb.updateImdbThumbnails(data);
+    }
+
+    updateDescription(value) {
+        document.querySelector("#description").value = value;
+    }
+
+    updateYear(value) {
+        document.querySelector("#year").value = value;
+    }
+
+    showSuccessItunesThumbnail(response) {
+        this.renderItunes.showSuccessItunesThumbnail(response);
+    }
+
+    showErrorItunesThumbnail(err) {
+        this.renderItunes.showErrorItunesThumbnail(err);
+    }
+
+    showSuccessCsfdThumbnail(response) {
+        this.renderCsfd.showSuccessCsfdThumbnail(response);
+    }
+
+    showErrorCsfdThumbnail(err) {
+        this.renderCsfd.showErrorCsfdThumbnail(err);
+    }
+
+    showSuccessImdbThumbnail(response) {
+        this.renderImdb.showSuccessImdbThumbnail(response);
+    }
+
+    showErrorImdbThumbnail(err) {
+        this.renderImdb.showErrorImdbThumbnail(err);
     }
 }

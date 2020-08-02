@@ -10,7 +10,7 @@ export class MovieItunesService extends RestClientService {
     }
 
     getServicePath() {
-        return "/movies/metadata/itunes/" + encodeURI(this.name);
+        return "/metadata/itunes/" + encodeURI(this.name);
     }
 
     setName(name) {
@@ -18,8 +18,8 @@ export class MovieItunesService extends RestClientService {
     }
 
     saveThumbnail(id, url, success, error) {
-        fetch(this.getBaseUri() + "/movies/" + id + "/thumbnail/url",
-             {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({url: url})})
+        fetch(this.getBaseUri() + "/metadata/itunes/" + id,
+             {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({url: url})})
             .then(response => success(response))
             .catch(err => error(err));
     }

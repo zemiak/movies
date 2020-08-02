@@ -3,6 +3,7 @@ import { RenderMovieDetail } from "/_dist_/movie/RenderMovieDetail.js";
 import { MovieDetailService } from "/_dist_/movie/MovieDetailService.js";
 import { MovieItunesService } from "/_dist_/movie/itunes/MovieItunesService.js";
 import { MovieCsfdService } from "/_dist_/movie/csfd/MovieCsfdService.js";
+import { MovieImdbService } from "/_dist_/movie/imdb/MovieImdbService.js";
 
 export class MovieEditView extends HTMLElement {
     constructor() {
@@ -10,18 +11,18 @@ export class MovieEditView extends HTMLElement {
         this.renderer = new RenderMovieDetail("Successfully saved", "Save error",
             {
                 "itunes": {
-                    "fetch": (name) => {this.fetchItunesThumbnails(name)},
-                    "save": (name) => {this.saveItunesThumbnails(name)}
+                    "fetch": (data) => {this.fetchItunesThumbnails(data)},
+                    "save": (data) => {this.saveItunesThumbnails(data)}
                 },
 
                 "csfd": {
-                    "fetch": (name) => {this.fetchCsfdThumbnails(name)},
-                    "save": (name) => {this.saveCsfdThumbnails(name)}
+                    "fetch": (data) => {this.fetchCsfdThumbnails(data)},
+                    "save": (data) => {this.saveCsfdThumbnails(data)}
                 },
 
                 "imdb": {
-                    "fetch": (name) => {this.fetchImdbThumbnails(name)},
-                    "save": (name) => {this.saveImdbThumbnails(name)}
+                    "fetch": (data) => {this.fetchImdbThumbnails(data)},
+                    "save": (data) => {this.saveImdbThumbnails(data)}
                 }
             }
         );
@@ -72,9 +73,9 @@ export class MovieEditView extends HTMLElement {
         this.csfdService.fetchData();
     }
 
-    saveCsfdThumbnails(url) {
+    saveCsfdThumbnails(data) {
         var id = this.location.params.id;
-        this.csfdService.saveThumbnail(id, url,
+        this.csfdService.saveThumbnail(id, data,
             response => this.saveSuccessCsfdThumbnail(response),
             err => this.saveErrorCsfdThumbnail(err));
     }
@@ -88,9 +89,9 @@ export class MovieEditView extends HTMLElement {
         this.imdbService.fetchData();
     }
 
-    saveImdbThumbnails(url) {
+    saveImdbThumbnails(data) {
         var id = this.location.params.id;
-        this.imdbService.saveThumbnail(id, url,
+        this.imdbService.saveThumbnail(id, data,
             response => this.saveSuccessImdbThumbnail(response),
             err => this.saveErrorImdbThumbnail(err));
     }
@@ -149,11 +150,37 @@ export class MovieEditView extends HTMLElement {
             return;
         }
 
-        this.renderer.showSuccessItunesThumbnail();
+        this.renderer.showSuccessItunesThumbnail(response);
     }
 
     saveErrorItunesThumbnail(err) {
         this.renderer.showErrorItunesThumbnail(err);
+    }
+
+    saveSuccessCsfdThumbnail(response) {
+        if (! response.ok) {
+            this.saveErrorCsfdThumbnail(response);
+            return;
+        }
+
+        this.renderer.showSuccessCsfdThumbnail(response);
+    }
+
+    saveErrorCsfdThumbnail(err) {
+        this.renderer.showErrorCsfdThumbnail(err);
+    }
+
+    saveSuccessImdbThumbnail(response) {
+        if (! response.ok) {
+            this.saveErrorImdbThumbnail(response);
+            return;
+        }
+
+        this.renderer.showSuccessImdbThumbnail(response);
+    }
+
+    saveErrorImdbThumbnail(err) {
+        this.renderer.showErrorImdbThumbnail(err);
     }
 
     cancelClick(event) {
