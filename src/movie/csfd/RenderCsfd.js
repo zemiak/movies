@@ -1,19 +1,27 @@
 import { html, render } from "lit-html";
 
 export class RenderCsfd {
-    constructor(csfdCallback, csfdSaveCallback) {
-        this.chooseCsfdArtwork = this.chooseCsfdArtwork.bind(this);
+    constructor(fetchMetadataCallback, metadataSaveCallback) {
+        this.chooseButtonClicked = this.chooseButtonClicked.bind(this);
         this.artworkItemClick = this.artworkItemClick.bind(this);
         this.artworkListClose = this.artworkListClose.bind(this);
         this.artworkEmptyClose = this.artworkEmptyClose.bind(this);
         this.artworkDetailClose = this.artworkDetailClose.bind(this);
         this.artworkDetailSave = this.artworkDetailSave.bind(this);
-        this.csfdCallback = csfdCallback;
-        this.csfdSaveCallback = csfdSaveCallback;
+        this.fetchMetadataCallback = fetchMetadataCallback;
+        this.metadataSaveCallback = metadataSaveCallback;
+        this.lastName = Math.random();
     }
 
-    chooseCsfdArtwork(event) {
-        this.csfdCallback(document.querySelector("#movieName").value);
+    chooseButtonClicked(event) {
+        let currentName = document.querySelector("#movieName").value
+
+        if (this.lastName != currentName) {
+            this.lastName = currentName;
+            this.fetchMetadataCallback(currentName);
+        } else {
+            document.querySelector("#csfdModal").classList.toggle("is-active");
+        }
     }
 
     artworkItemClick(event) {
@@ -42,7 +50,7 @@ export class RenderCsfd {
         var anchor = document.querySelector("#csfdDetailTitle");
         var id = anchor.getAttribute("data-id");
         var data = this.csfdData[id];
-        this.csfdSaveCallback(data);
+        this.metadataSaveCallback(data);
     }
 
     updateCsfdThumbnails(data) {
@@ -77,7 +85,7 @@ export class RenderCsfd {
             return html``;
         }
 
-        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseCsfdArtwork}">CSFD</button>`;
+        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseButtonClicked}">CSFD</button>`;
         var listOfArtwork = html`<div class="modal" id="csfdModal">
             <div class="modal-background"></div>
             <div class="modal-card">

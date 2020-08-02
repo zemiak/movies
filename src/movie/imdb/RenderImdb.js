@@ -1,19 +1,27 @@
 import { html, render } from "lit-html";
 
 export class RenderImdb {
-    constructor(imdbCallback, imdbSaveCallback) {
-        this.chooseImdbArtwork = this.chooseImdbArtwork.bind(this);
+    constructor(fetchMetadataCallback, metadataSaveCallback) {
+        this.chooseButtonClicked = this.chooseButtonClicked.bind(this);
         this.artworkItemClick = this.artworkItemClick.bind(this);
         this.artworkListClose = this.artworkListClose.bind(this);
         this.artworkEmptyClose = this.artworkEmptyClose.bind(this);
         this.artworkDetailClose = this.artworkDetailClose.bind(this);
         this.artworkDetailSave = this.artworkDetailSave.bind(this);
-        this.imdbCallback = imdbCallback;
-        this.imdbSaveCallback = imdbSaveCallback;
+        this.fetchMetadataCallback = fetchMetadataCallback;
+        this.metadataSaveCallback = metadataSaveCallback;
+        this.lastName = Math.random();
     }
 
-    chooseImdbArtwork(event) {
-        this.imdbCallback(document.querySelector("#movieName").value);
+    chooseButtonClicked(event) {
+        let currentName = document.querySelector("#movieName").value
+
+        if (this.lastName != currentName) {
+            this.lastName = currentName;
+            this.fetchMetadataCallback(currentName);
+        } else {
+            document.querySelector("#imdbModal").classList.toggle("is-active");
+        }
     }
 
     artworkItemClick(event) {
@@ -42,7 +50,7 @@ export class RenderImdb {
         var anchor = document.querySelector("#imdbDetailTitle");
         var id = anchor.getAttribute("data-id");
         var data = this.imdbData[id];
-        this.imdbSaveCallback(data);
+        this.metadataSaveCallback(data);
     }
 
     updateImdbThumbnails(data) {
@@ -77,7 +85,7 @@ export class RenderImdb {
             return html``;
         }
 
-        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseImdbArtwork}">IMDB</button>`;
+        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseButtonClicked}">IMDB</button>`;
         var listOfArtwork = html`<div class="modal" id="imdbModal">
             <div class="modal-background"></div>
             <div class="modal-card">

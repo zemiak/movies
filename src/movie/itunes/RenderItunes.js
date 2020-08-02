@@ -1,19 +1,27 @@
 import { html, render } from "lit-html";
 
 export class RenderItunes {
-    constructor(itunesCallback, itunesSaveCallback) {
-        this.chooseItunesArtwork = this.chooseItunesArtwork.bind(this);
+    constructor(fetchMetadataCallback, metadataSaveCallback) {
+        this.chooseButtonClicked = this.chooseButtonClicked.bind(this);
         this.artworkItemClick = this.artworkItemClick.bind(this);
         this.artworkListClose = this.artworkListClose.bind(this);
         this.artworkEmptyClose = this.artworkEmptyClose.bind(this);
         this.artworkDetailClose = this.artworkDetailClose.bind(this);
         this.artworkDetailSave = this.artworkDetailSave.bind(this);
-        this.itunesCallback = itunesCallback;
-        this.itunesSaveCallback = itunesSaveCallback;
+        this.fetchMetadataCallback = fetchMetadataCallback;
+        this.metadataSaveCallback = metadataSaveCallback;
+        this.lastName = Math.random();
     }
 
-    chooseItunesArtwork(event) {
-        this.itunesCallback(document.querySelector("#movieName").value);
+    chooseButtonClicked(event) {
+        let currentName = document.querySelector("#movieName").value
+
+        if (this.lastName != currentName) {
+            this.lastName = currentName;
+            this.fetchMetadataCallback(currentName);
+        } else {
+            document.querySelector("#itunesModal").classList.toggle("is-active");
+        }
     }
 
     artworkItemClick(event) {
@@ -42,7 +50,7 @@ export class RenderItunes {
         var anchor = document.querySelector("#itunesDetailTitle");
         var id = anchor.getAttribute("data-id");
         var data = this.csfdData[id].artworkUrl;
-        this.itunesSaveCallback(data);
+        this.metadataSaveCallback(data);
     }
 
     updateItunesThumbnails(data) {
@@ -77,7 +85,7 @@ export class RenderItunes {
             return html``;
         }
 
-        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseItunesArtwork}">iTunes</button>`;
+        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseButtonClicked}">iTunes</button>`;
         var listOfArtwork = html`<div class="modal" id="itunesModal">
             <div class="modal-background"></div>
             <div class="modal-card">
