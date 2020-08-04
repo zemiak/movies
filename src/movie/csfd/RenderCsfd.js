@@ -1,4 +1,8 @@
 import { html, render } from "lit-html";
+import { MetadataDetailDialog } from "../metadata/MetadataDetailDialog.js";
+import { MetadataEmptyDialog } from "../metadata/MetadataEmptyDialog.js";
+import { MetadataListDialog } from "../metadata/MetadataListDialog.js";
+import { MetadataItem } from "../metadata/MetadataItem.js";
 
 export class RenderCsfd {
     constructor(fetchMetadataCallback, metadataSaveCallback) {
@@ -11,6 +15,7 @@ export class RenderCsfd {
         this.fetchMetadataCallback = fetchMetadataCallback;
         this.metadataSaveCallback = metadataSaveCallback;
         this.lastName = Math.random();
+        this.title = "CSFD";
     }
 
     chooseButtonClicked(event) {
@@ -65,16 +70,14 @@ export class RenderCsfd {
         var items = [];
         var i = 0;
         data.forEach(element => {
-            items.push(html`<a href="javascript:void(0)" onclick="javascript:window._RenderCsfd_detailClick(this)" class="panel-block" style="height: 50px;" data-id="${i}">
-            <span class="panel-icon">
-              <figure class="image is-16x16"><img src="${element.imageUrl}"></figure>
-            </span>
-            <div style="padding-left: 1em;">${element.description}</div>
-          </a>`);
+            items.push(html`<metadata-item data-image-url="${element.imageUrl}"
+                data-description="${element.description}"
+                data-url="${element.url}"
+                data-title="${this.title}"></metadata-item>`);
             i++;
         });
-        render(html`<nav class="panel">${items}</nav>`, document.querySelector("#csfdList"));
-        document.querySelector("#csfdModal").classList.toggle("is-active");
+        render(html`<nav class="panel">${items}</nav>`, document.querySelector(this.title + "-list"));
+        document.querySelector("#" + this.title + "-list-dialog").on();
     }
 
     view(readOnly) {
@@ -82,47 +85,10 @@ export class RenderCsfd {
             return html``;
         }
 
-        var button = html`<button type="button" class="button is-link is-light" @click="${this.chooseButtonClicked}">CSFD</button>`;
-        var listOfArtwork = html`<div class="modal" id="csfdModal">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">CSFD Artwork</p>
-                <button class="delete" aria-label="close" type="button" @click="${this.artworkListClose}"></button>
-            </header>
-            <section class="modal-card-body">
-                <div id="csfdList"></div>
-            </section>
-            </div>
-        </div>`;
-        var emptyResult = html`<div class="modal" id="csfdModalEmpty">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">CSFD Artwork</p>
-                <button class="delete" aria-label="close" type="button" @click="${this.artworkEmptyClose}"></button>
-            </header>
-            <section class="modal-card-body">
-                The CSFD service returned an empty result for <b><span id="csfdTitle"></span></b>.
-            </section>
-            </div>
-        </div>`;
-        var artworkDetail = html`<div class="modal" id="csfdModalDetail">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title" id="csfdDetailTitle" data-id="x"></p>
-                <button class="delete" aria-label="close" type="button" @click="${this.artworkDetailClose}"></button>
-            </header>
-            <section class="modal-card-body">
-                <div id="csfdDetail" style="height:230px;"></div>
-            </section>
-            <footer class="modal-card-foot">
-                <button type="button" class="button is-success" @click="${this.artworkDetailSave}">Save</button>
-                <button type="button" class="button" @click="${this.artworkDetailClose}">Cancel</button>
-            </footer>
-            </div>
-        </div>`;
+        let button = html`<button type="button" class="button is-link is-light" @click="${this.chooseButtonClicked}">${this.title}</button>`;
+        let listOfArtwork = html`<metadata-list-dialog data-title="${this.title}"></metadata-list-dialog>`;
+        let emptyResult = html`<metadata-empty-dialog data-title="${this.title}"></metadata-empty-dialog>`;
+        let artworkDetail = html`<metadata-detail-dialog data-title="${this.title}"></metadata-detail-dialog>`;
 
         return html`${button} ${listOfArtwork} ${emptyResult} ${artworkDetail}`;
     }
