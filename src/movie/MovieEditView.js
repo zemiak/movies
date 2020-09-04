@@ -150,6 +150,10 @@ export class MovieEditView extends HTMLElement {
             return;
         }
 
+        response.json().then(data => {
+            document.querySelector("#moviePictureFileName").value = data.pictureFileName;
+        });
+
         this.renderer.showSuccessItunesThumbnail(response);
     }
 
@@ -163,6 +167,12 @@ export class MovieEditView extends HTMLElement {
             return;
         }
 
+        response.json().then(data => {
+            document.querySelector("#moviePictureFileName").value = data.pictureFileName;
+            document.querySelector("#movieDescription").value = data.description;
+            document.querySelector("#movieYear").value = data.year;
+        });
+
         this.renderer.showSuccessCsfdThumbnail(response);
     }
 
@@ -175,6 +185,12 @@ export class MovieEditView extends HTMLElement {
             this.saveErrorImdbThumbnail(response);
             return;
         }
+
+        response.json().then(data => {
+            document.querySelector("#moviePictureFileName").value = data.pictureFileName;
+            document.querySelector("#movieDescription").value = data.description;
+            document.querySelector("#movieYear").value = data.year;
+        });
 
         this.renderer.showSuccessImdbThumbnail(response);
     }
