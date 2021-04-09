@@ -1,24 +1,41 @@
-# New Project
+# bce.design
 
-> ✨ Bootstrapped with Create Snowpack App (CSA).
+minimal tooling, essential dependencies, high productivity, no migrations, web component starter for non-trivial web applications
 
-## Available Scripts
+<img src="https://repository-images.githubusercontent.com/355100926/4731b900-979e-11eb-9014-3b30688cc691" alt="Boundary Control Entity quickstarter -> with web components" height="400"/>
 
-### npm start
+# run
 
-Runs the app in the development mode.
-Open http://localhost:8080 to view it in the browser.
+To launch the application:
 
-The page will reload if you make edits.
-You will also see any lint errors in the console.
+1. Install [browsersync](https://www.browsersync.io)
+2. `git clone https://github.com/AdamBien/bce.design`
+3. `cd app`
+4. Perform: `browser-sync src -f src -b "google chrome" --no-notify`
 
-### npm run build
+[![](https://i.ytimg.com/vi/LYzGgCW0OxY/mqdefault.jpg)](https://www.youtube.com/embed/LYzGgCW0OxY?rel=0)
 
-Builds a static copy of yor site to the `build/` folder.
-Your app is ready to be deployed!
+# IDE
 
-**For the best production performance:** Add a build bundler plugin like "@snowpack/plugin-webpack" or "@snowpack/plugin-parcel" to your `snowpack.config.json` config file.
+1. [Visual Studio Code](https://code.visualstudio.com)
+2. Setup: [JS imports](https://www.adam-bien.com/roller/abien/entry/fixing_es_6_import_autocompletion)
+3. lit-html [plugin](https://marketplace.visualstudio.com/items?itemName=bierner.lit-html) for syntax highlighting inside html templates
+4. redux devtools chrome [extension](https://github.com/zalmoxisus/redux-devtools-extension)
 
-### Q: What about Eject?
+# update dependencies
 
-No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
+Checkout [libs](https://github.com/AdamBien/bce.design/tree/main/libs)
+
+# external ingredients
+
+1. [lit-html](https://lit-html.polymer-project.org)
+2. [redux toolkit](https://redux-toolkit.js.org)
+3. [vaadin router](https://vaadin.com/router) (suggestion / optional)
+4. [rollup](https://rollupjs.org/) (for updates / optional)
+# what is BCE?
+
+Boundary Control Entity (BCE) pattern is used to organize elements according to their responsibilities:  [https://en.wikipedia.org/wiki/Entity-control-boundary](https://en.wikipedia.org/wiki/Entity-control-boundary).
+
+Why it is needed? BCE was published in 1992 and since then described in various books and articles. Also: the boundary, control, entity icons are available in all modelling, drawing and designing tools. 
+
+The best of all: with BCE we don't have to discuss the naming anymore and therefore completely ignore the [Parkinson's law of triviality](https://en.wikipedia.org/wiki/Law_of_triviality) :-).
