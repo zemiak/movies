@@ -186,7 +186,8 @@ func TestScan(t *testing.T) {
 	if got := lib.Items[eps[0].ID]; got != eps[0] || eps[0].Series() != ff {
 		t.Errorf("index/series links broken")
 	}
-	if NormalizeID("9DD4E461-268C-8034-F5C8-564E155C67A6") != "9dd4e461268c8034f5c8564e155c67a6" {
+	if NormalizeID("9DD4E461-268C-8034-F5C8-564E155C67A6") != "9dd4e461268c8034f5c8564e155c67a6" ||
+		NormalizeID("person-c8c1e985132cd8a8b3796aefa8f35cc5") != "c8c1e985132cd8a8b3796aefa8f35cc5" {
 		t.Errorf("NormalizeID")
 	}
 }

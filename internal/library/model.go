@@ -223,7 +223,11 @@ func ID(key string) string {
 }
 
 // NormalizeID turns a client-supplied id (maybe dashed or uppercase GUID) into our format.
+// A leading word that isn't hex is dropped: Infuse asks for people as "person-<id>".
 func NormalizeID(id string) string {
+	if prefix, rest, ok := strings.Cut(id, "-"); ok && strings.Trim(strings.ToLower(prefix), "0123456789abcdef") != "" {
+		id = rest
+	}
 	return strings.ToLower(strings.ReplaceAll(id, "-", ""))
 }
 
