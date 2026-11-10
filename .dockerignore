@@ -1,0 +1,7 @@
+.git
+.devbox
+build
+devbox.json
+devbox.lock
+tools
+*.md
