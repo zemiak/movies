@@ -10,7 +10,7 @@ RUN go vet ./... \
  && go build -trimpath -ldflags="-s -w" -o /out/movies .
 
 # Runtime: ffprobe for stream details (codecs, languages, duration).
-FROM alpine:3.24.1 AS runtime
+FROM alpine:3.24.4 AS runtime
 RUN apk add --no-cache ffmpeg tzdata ca-certificates
 COPY --from=build /out/movies /usr/local/bin/movies
 ENV DATA_DIR=/config PORT=8096
