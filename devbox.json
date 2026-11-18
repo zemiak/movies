@@ -1,8 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.18.4/.schema/devbox.schema.json",
   "packages": [
-    "go@1.25",
-    "ffmpeg@latest"
+    "go@1.26",
+    "ffmpeg@latest",
+    "gh@latest"
   ],
   "shell": {
     "init_hook": [
