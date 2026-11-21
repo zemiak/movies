@@ -1,5 +1,5 @@
 # Build: vet + tests are gates — a failing one fails the image build.
-FROM golang:1.26-alpine AS build
+FROM golang:1.27-alpine AS build
 ENV CGO_ENABLED=0 GOFLAGS=-buildvcs=false
 WORKDIR /src
 COPY go.mod go.sum ./
